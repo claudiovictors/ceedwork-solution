@@ -1,0 +1,211 @@
+.site-header {
+    --gutter: max(1rem, calc((100vw - var(--container)) / 2));
+    --slant: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    animation: header-in 0.6s ease backwards;
+}
+
+@keyframes header-in {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.topbar {
+    background: var(--color-primary);
+    color: var(--text-on-dark);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+}
+
+.topbar__inner {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-6);
+    min-height: 40px;
+    padding-inline: var(--gutter);
+}
+
+.topbar__item,
+.topbar__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    white-space: nowrap;
+    transition:
+        color var(--transition),
+        background var(--transition);
+}
+
+.topbar i {
+    font-size: 1.1rem;
+    color: var(--color-aqua);
+}
+
+a.topbar__item:hover {
+    color: var(--color-aqua);
+}
+
+.topbar__pill {
+    padding: 4px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+}
+
+.topbar__pill:hover {
+    background: var(--accent);
+}
+
+.topbar__pill:hover i {
+    color: var(--color-white);
+}
+
+.navbar {
+    display: flex;
+    align-items: stretch;
+    min-height: 84px;
+    background: var(--color-primary);
+}
+
+.navbar__panel {
+    display: flex;
+    align-items: center;
+    background: var(--color-white);
+}
+
+.navbar__panel--brand {
+    flex: 1 1 0;
+    padding-left: var(--gutter);
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+}
+
+.navbar__panel--menu {
+    flex: 0 0 auto;
+    padding-left: calc(var(--slant) + var(--space-4));
+    padding-right: var(--gutter);
+    clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.navbar__brand {
+    display: inline-flex;
+    align-items: center;
+}
+
+.navbar__brand img {
+    height: 48px;
+    width: auto;
+}
+
+.navbar__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.navbar__links a {
+    display: block;
+    padding: 10px 18px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    white-space: nowrap;
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.navbar__links a:hover {
+    background: var(--color-background);
+    color: var(--color-secondary);
+}
+
+.navbar__links a.active {
+    background: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.navbar__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: auto var(--gutter) auto 0;
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--color-primary);
+    font-size: 1.75rem;
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        position: relative;
+        min-height: 72px;
+        background: var(--color-white);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .navbar__panel--brand {
+        clip-path: none;
+    }
+
+    .navbar__brand img {
+        height: 42px;
+    }
+
+    .navbar__toggle {
+        display: flex;
+        background: var(--color-background);
+    }
+
+    .navbar__panel--menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: var(--space-4) 1rem var(--space-6);
+        clip-path: none;
+        box-shadow: var(--shadow-md);
+        border-top: 1px solid var(--border);
+    }
+
+    .navbar__panel--menu.is-open {
+        display: block;
+    }
+
+    .navbar__links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-1);
+    }
+
+    .navbar__links a {
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar__inner {
+        justify-content: space-between;
+        gap: var(--space-3);
+    }
+
+    .topbar__item--address {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .topbar {
+        font-size: 0.8rem;
+    }
+}
