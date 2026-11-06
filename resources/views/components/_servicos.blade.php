@@ -1,6 +1,4 @@
-{{-- resources/views/components/_servicos.blade.php --}}
 @php
-    // Aceita URL externa (Unsplash) ou ficheiro local em public/assets/images
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
     $u = fn ($id) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&w=600&q=75";

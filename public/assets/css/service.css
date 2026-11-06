@@ -1,0 +1,319 @@
+/* ==========================================================================
+   public/css/pages/servicos.css  (página de Serviços)
+   ========================================================================== */
+
+/* ---------- Introdução + atalhos ---------- */
+.services-intro {
+    padding-block: var(--space-16) var(--space-8);
+}
+
+.services-intro__body {
+    max-width: 720px;
+}
+
+.services-intro__title {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-3xl);
+    text-transform: uppercase;
+    color: var(--color-secondary);
+}
+
+.services-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+}
+
+.services-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 10px 20px;
+    background: var(--color-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    transition:
+        background var(--transition),
+        color var(--transition),
+        border-color var(--transition);
+}
+
+.services-nav i {
+    font-size: 1.2rem;
+    color: var(--color-teal);
+    transition: color var(--transition);
+}
+
+.services-nav a:hover {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.services-nav a:hover i {
+    color: var(--color-white);
+}
+
+/* ---------- Blocos de serviço ---------- */
+.service {
+    padding-block: var(--space-16);
+    overflow: hidden;
+    background: var(--color-white);
+    scroll-margin-top: 130px; /* espaço para o header fixo ao saltar pelo atalho */
+}
+
+.service--alt {
+    background: linear-gradient(180deg, #f4f7fb, var(--color-white));
+}
+
+.service__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-16);
+}
+
+.service--alt .service__media {
+    order: 2;
+}
+
+/* imagem com moldura teal deslocada */
+.service__media {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+}
+
+.service__media::before {
+    content: "";
+    position: absolute;
+    inset: 16px -16px -16px 16px;
+    border: 2px solid var(--color-teal);
+    border-radius: var(--radius-md);
+    opacity: 0.6;
+}
+
+.service--alt .service__media::before {
+    inset: 16px 16px -16px -16px;
+}
+
+.service__media img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: 0 14px 30px rgba(3, 27, 58, 0.22);
+}
+
+/* ícone do serviço no canto da imagem */
+.service__badge {
+    position: absolute;
+    z-index: 2;
+    top: -20px;
+    left: -20px;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    background: var(--color-secondary);
+    color: var(--color-white);
+    font-size: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.service--alt .service__badge {
+    left: auto;
+    right: -20px;
+}
+
+/* ---------- Conteúdo ---------- */
+.service__title {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-2xl);
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.service--alt .service__title {
+    color: var(--color-secondary);
+}
+
+.service__content > p {
+    max-width: 56ch;
+}
+
+.service__list {
+    display: grid;
+    gap: var(--space-3);
+    margin-block: var(--space-6) var(--space-8);
+}
+
+.service__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    color: var(--text-main);
+}
+
+.service__list i {
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 1.4rem;
+    color: var(--color-teal);
+}
+
+/* ---------- Chamada final (cores sólidas + corte diagonal, como o menu) ---------- */
+.services-cta {
+    padding-block: var(--space-8) var(--space-16);
+}
+
+.services-cta__box {
+    height: 160px;
+    --slant: 56px;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding: var(--space-12);
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* segundo tom sólido, cortado na diagonal */
+.services-cta__box::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 0 auto;
+    width: 36%;
+    background: var(--color-secondary);
+    clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.services-cta__text .eyebrow {
+    color: var(--color-aqua);
+}
+
+.services-cta__text h2 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-2xl);
+    text-transform: uppercase;
+    color: var(--color-white);
+}
+
+.services-cta__text p {
+    max-width: 48ch;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.services-cta__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    flex-shrink: 0;
+}
+
+.services-cta__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.85);
+    transition: color var(--transition);
+}
+
+.services-cta__phone i {
+    font-size: 1.2rem;
+    color: var(--color-aqua);
+}
+
+.services-cta__phone:hover {
+    color: var(--color-white);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 960px) {
+    .services-intro {
+        padding-block: var(--space-12) var(--space-6);
+    }
+    .service {
+        padding-block: var(--space-12);
+    }
+    .services-cta {
+        padding-block: var(--space-6) var(--space-12);
+    }
+
+    .service__inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+
+    /* no mobile o texto vem primeiro, imagem depois */
+    .service__content {
+        order: -1;
+    }
+    .service--alt .service__media {
+        order: 0;
+    }
+
+    /* ícone dentro da imagem, para não sair do ecrã */
+    .service__badge,
+    .service--alt .service__badge {
+        top: 12px;
+        left: 12px;
+        right: auto;
+        width: 52px;
+        height: 52px;
+        font-size: 1.6rem;
+    }
+
+    .service__media::before,
+    .service--alt .service__media::before {
+        inset: 12px -8px -12px 12px;
+    }
+
+    /* no telemóvel o segundo tom passa para a parte de baixo */
+    .services-cta__box {
+        --slant: 28px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-6);
+        padding: var(--space-8) var(--space-8) 0;
+    }
+
+    .services-cta__box::before {
+        display: none;
+    }
+
+    .services-cta__actions {
+        margin: 0 calc(-1 * var(--space-8));
+        padding: calc(var(--space-6) + var(--slant)) var(--space-8)
+            var(--space-8);
+        background: var(--color-secondary);
+        clip-path: polygon(0 var(--slant), 100% 0, 100% 100%, 0 100%);
+    }
+}
+
+@media (max-width: 560px) {
+    .services-nav a {
+        padding: 8px 16px;
+    }
+
+    .services-cta__actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

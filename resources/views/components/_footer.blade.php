@@ -87,8 +87,12 @@
         </p>
     </div>
 
-    <a href="#" class="footer__top" id="backToTop" aria-label="Voltar ao topo">
+    <!--<a href="#" class="footer__top" id="backToTop" aria-label="Voltar ao topo">
         <i class='bx bx-chevron-up'></i>
+    </a>-->
+
+    <a href="#" class="footer__top" id="backToTop" aria-label="Voltar ao topo">
+        <i class='bx bx-message-square-dots'></i>
     </a>
 </footer>
 

@@ -11,6 +11,8 @@ Route::get('/about-us', function () {
     return view('pages.about');
 });
 
+Route::view('/services', 'pages.service')->name('service');
+
 Route::get('/contacts', [ContactController::class, 'show'])->name('contacts');
 Route::post('/contacts', [ContactController::class, 'send'])
     ->middleware('throttle:5,1') // máx. 5 envios por minuto por IP

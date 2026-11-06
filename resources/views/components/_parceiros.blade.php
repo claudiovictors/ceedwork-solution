@@ -18,7 +18,7 @@
 
         <header class="partners__head" data-reveal>
             <span class="eyebrow">Parcerias</span>
-            <h2 class="partners__title">Os nossos parceiros estratégicos</h2>
+            <h2 class="partners__title">Os nossos parceiros</h2>
         </header>
 
         <div data-reveal style="--reveal-delay:150ms">

@@ -37,7 +37,7 @@
                 <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Início</a></li>
                 <li><a href="{{ url('/blog') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
                 <li><a href="{{ url('/about-us') }}" class="{{ request()->is('about-us') ? 'active' : '' }}">Sobre nós</a></li>
-                <li><a href="{{ url('/servicos') }}" class="{{ request()->is('servicos*') ? 'active' : '' }}">Serviços</a></li>
+                <li><a href="{{ url('/services') }}" class="{{ request()->is('services*') ? 'active' : '' }}">Serviços</a></li>
                 <li><a href="{{ url('/portfolio') }}" class="{{ request()->is('portfolio*') ? 'active' : '' }}">Portfólio</a></li>
                 <li><a href="{{ url('/noticias') }}" class="{{ request()->is('noticias*') ? 'active' : '' }}">Notícias</a></li>
                 <li><a href="{{ url('/contacts') }}" class="{{ request()->is('contacts') ? 'active' : '' }}">Contactos</a></li>
