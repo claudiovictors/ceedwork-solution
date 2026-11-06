@@ -1,0 +1,118 @@
+.partners {
+    padding-block: var(--space-16);
+    background: var(--bg-body);
+}
+
+.partners__head {
+    margin-bottom: var(--space-12);
+}
+
+.partners__title {
+    font-size: var(--text-3xl);
+    text-transform: uppercase;
+    color: var(--color-secondary);
+}
+
+.partners__track {
+    --cols: 4;
+    --gap: var(--space-8);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(
+        (100% - (var(--cols) - 1) * var(--gap)) / var(--cols)
+    );
+    gap: var(--gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.partners__track::-webkit-scrollbar {
+    display: none;
+}
+
+.partners__item {
+    display: grid;
+    place-items: center;
+    min-height: 110px;
+    scroll-snap-align: start;
+}
+
+.partners__item a {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.partners__item img {
+    width: auto;
+    max-width: 85%;
+    max-height: 56px;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.partners__item:hover img {
+    transform: scale(1.08);
+}
+
+.partners__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+}
+
+.partners__dots[hidden] {
+    display: none;
+}
+
+.partners__dots button {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-background);
+    transition:
+        background var(--transition),
+        transform var(--transition);
+}
+
+.partners__dots button::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+}
+
+.partners__dots button:hover {
+    background: var(--color-aqua);
+}
+
+.partners__dots button.is-active {
+    background: var(--color-secondary);
+    transform: scale(1.3);
+}
+
+@media (max-width: 960px) {
+    .partners__track {
+        --cols: 3;
+        --gap: var(--space-6);
+    }
+}
+
+@media (max-width: 600px) {
+    .partners {
+        padding-block: var(--space-12);
+    }
+    .partners__head {
+        margin-bottom: var(--space-8);
+    }
+    .partners__track {
+        --cols: 2;
+        --gap: var(--space-4);
+    }
+    .partners__item {
+        min-height: 90px;
+    }
+}

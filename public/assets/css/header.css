@@ -1,0 +1,71 @@
+.page-header {
+    position: relative;
+    padding-block: var(--space-16) calc(var(--space-16) + 28px);
+    color: var(--color-white);
+    background-image:
+        linear-gradient(105deg, rgba(3, 27, 58, 0.92), rgba(19, 57, 124, 0.78)),
+        var(--ph-image, none);
+    background-size: cover;
+    background-position: center;
+    /* recorte em "V" no fundo, como a curva do hero */
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 28px),
+        50% 100%,
+        0 calc(100% - 28px)
+    );
+}
+
+.page-header__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.page-header__crumbs li + li::before {
+    content: "/";
+    margin-right: var(--space-2);
+    opacity: 0.6;
+}
+
+.page-header__crumbs a {
+    transition: color var(--transition);
+}
+
+.page-header__crumbs a:hover {
+    color: var(--color-aqua);
+}
+
+.page-header__title {
+    padding-left: var(--space-4);
+    border-left: 4px solid var(--color-teal);
+    font-size: var(--text-3xl);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-white);
+}
+
+/* Entrada ao carregar (backwards: não deixa estilos presos no fim) */
+@keyframes ph-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+}
+
+.page-header__crumbs {
+    animation: ph-in 0.6s ease backwards;
+}
+.page-header__title {
+    animation: ph-in 0.6s 0.15s ease backwards;
+}
+
+@media (max-width: 600px) {
+    .page-header {
+        padding-block: var(--space-12) calc(var(--space-12) + 24px);
+    }
+}

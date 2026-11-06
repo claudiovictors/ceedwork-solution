@@ -1,0 +1,355 @@
+/* ==========================================================================
+   public/css/pages/contactos.css
+   ========================================================================== */
+
+/* ---------- Cartões de contacto ---------- */
+.contact-cards {
+  padding-block: var(--space-16) var(--space-8);
+}
+
+.contact-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.contact-card {
+  padding: var(--space-8) var(--space-6);
+  background: var(--color-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-card__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--space-4);
+  border-radius: 50%;
+  background: var(--color-light-blue);
+  color: var(--color-secondary);
+  font-size: 1.6rem;
+}
+
+.contact-card h3 {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+}
+
+.contact-card li + li {
+  margin-top: var(--space-1);
+}
+
+.contact-card li {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-card a {
+  transition: color var(--transition);
+}
+
+.contact-card a:hover {
+  color: var(--color-teal);
+}
+
+/* ---------- Formulário + apoio ---------- */
+.contact-main {
+  padding-block: var(--space-12) var(--space-16);
+}
+
+.contact-main__inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.contact-title {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-3xl);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.contact-intro > p {
+  max-width: 52ch;
+}
+
+.contact-quick {
+  display: grid;
+  gap: var(--space-4);
+  margin-block: var(--space-8);
+}
+
+.contact-quick li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--text-muted);
+}
+
+.contact-quick i {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--color-teal);
+}
+
+.contact-quick a {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.contact-quick a:hover {
+  color: var(--color-teal);
+}
+
+.contact-social {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.contact-social a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-size: 1.25rem;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.contact-social a:hover {
+  background: var(--color-teal);
+  transform: translateY(-3px);
+}
+
+/* ---------- Formulário ---------- */
+.form-card {
+  padding: var(--space-8);
+  background: var(--color-white);
+}
+
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.field label {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #F8FAFD;
+  border: 1px solid rgba(3, 27, 58, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  background: var(--color-white);
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(27, 170, 153, 0.2);
+}
+
+.field--error input,
+.field--error select,
+.field--error textarea {
+  border-color: #B42318;
+}
+
+.field__error {
+  color: #B42318;
+  font-size: 0.85rem;
+}
+
+/* campo anti-spam: fora do ecrã, não usar display:none */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-card .btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+}
+
+/* ---------- Alertas ---------- */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  border-left: 4px solid;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+}
+
+.alert i {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+}
+
+.alert--success {
+  background: #E7F6F3;
+  border-color: var(--color-teal);
+  color: #0D5C52;
+}
+
+.alert--error {
+  background: #FDECEA;
+  border-color: #B42318;
+  color: #7A1A12;
+}
+
+/* ---------- FAQ (lista com linhas finas, estilo Sistec) ---------- */
+.faq {
+  padding-block: var(--space-16);
+  background: var(--bg-body);
+}
+
+.faq__head,
+.faq__list {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.faq__head {
+  margin-bottom: var(--space-8);
+}
+
+.faq__title {
+  font-size: var(--text-3xl);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+/* cada pergunta termina numa linha fina escura */
+.faq__item {
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.faq__item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 1.75rem 1.25rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  transition: color var(--transition);
+}
+
+.faq__item summary::-webkit-details-marker { display: none; }
+
+.faq__item summary:hover {
+  color: var(--color-secondary);
+}
+
+.faq__item summary:focus-visible {
+  outline-offset: -3px;
+}
+
+/* seta ">" que gira para baixo quando abre */
+.faq__item summary i {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--color-secondary);
+  transition: transform var(--transition);
+}
+
+.faq__item[open] summary i {
+  transform: rotate(90deg);
+}
+
+.faq__answer {
+  padding: 0 1.25rem 1.75rem;
+}
+
+.faq__answer p {
+  max-width: 75ch;
+}
+
+.faq__item[open] .faq__answer {
+  animation: faq-in 0.3s ease;
+}
+
+@keyframes faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1024px) {
+  .contact-cards__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  .contact-cards { padding-block: var(--space-12) var(--space-6); }
+  .contact-main,
+  .faq { padding-block: var(--space-12); }
+
+  .contact-main__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+}
+
+@media (max-width: 560px) {
+  .contact-cards__grid,
+  .form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card {
+    padding: var(--space-6);
+  }
+
+  .faq__item summary {
+    padding: var(--space-6) var(--space-2);
+  }
+
+  .faq__answer {
+    padding: 0 var(--space-2) var(--space-6);
+  }
+}

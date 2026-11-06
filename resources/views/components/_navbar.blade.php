@@ -36,11 +36,11 @@
             <ul class="navbar__links">
                 <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Início</a></li>
                 <li><a href="{{ url('/blog') }}" class="{{ request()->is('blog*') ? 'active' : '' }}">Blog</a></li>
-                <li><a href="{{ url('/sobre-nos') }}" class="{{ request()->is('sobre-nos') ? 'active' : '' }}">Sobre nós</a></li>
+                <li><a href="{{ url('/about-us') }}" class="{{ request()->is('about-us') ? 'active' : '' }}">Sobre nós</a></li>
                 <li><a href="{{ url('/servicos') }}" class="{{ request()->is('servicos*') ? 'active' : '' }}">Serviços</a></li>
                 <li><a href="{{ url('/portfolio') }}" class="{{ request()->is('portfolio*') ? 'active' : '' }}">Portfólio</a></li>
                 <li><a href="{{ url('/noticias') }}" class="{{ request()->is('noticias*') ? 'active' : '' }}">Notícias</a></li>
-                <li><a href="{{ url('/contactos') }}" class="{{ request()->is('contactos') ? 'active' : '' }}">Contactos</a></li>
+                <li><a href="{{ url('/contacts') }}" class="{{ request()->is('contacts') ? 'active' : '' }}">Contactos</a></li>
             </ul>
         </div>
     </nav>

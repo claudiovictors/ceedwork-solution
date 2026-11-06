@@ -10,4 +10,5 @@
     @include('components._marcas')
     @include('components._destaques')
     @include('components._servicos')
+    @include('components._parceiros')
 @endsection

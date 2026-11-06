@@ -8,7 +8,7 @@
     $brands = $brands ?? [
         [
             'name'  => 'Ceedwork Solution',
-            'image' => 'https://placehold.co/280x90/ffffff/13397C/png?text=Ceedwork+Solution',
+            'image' => 'assets/images/logo_64px.png',
             'url'   => '/servicos/software',
         ],
         [

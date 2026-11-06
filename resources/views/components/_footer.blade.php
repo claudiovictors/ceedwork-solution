@@ -46,7 +46,7 @@
                         <i class='bx bxs-map'></i>
                         <div>
                             <h3 class="footer__title">Endereço</h3>
-                            <p>Rua Da Policia, Cabinda</p>
+                            <p> Rua Da Polícia, Cabinda</p>
                         </div>
                     </li>
                     <li>
@@ -67,7 +67,7 @@
                         <i class='bx bx-envelope'></i>
                         <div>
                             <h3 class="footer__title">Email</h3>
-                            <p><a href="mailto:geral@ceedwork.co.ao">geral@ceedwork.co.ao</a></p>
+                            <p><a href="mailto:info@ceedwork-solutions.com">info@ceedwork-solutions.com</a></p>
                         </div>
                     </li>
                 </ul>
