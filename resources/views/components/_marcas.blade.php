@@ -1,20 +1,16 @@
-{{-- resources/views/components/_marcas.blade.php --}}
 @php
-    // Aceita URL externa ou ficheiro local em public/assets/images
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
-    // Troca 'image' pelos teus PNG, ex: 'assets/images/logo-software.png'
-    // 'external' => true abre o link noutro separador
     $brands = $brands ?? [
         [
             'name'  => 'Ceedwork Solution',
-            'image' => 'assets/images/logo_64px.png',
-            'url'   => '/servicos/software',
+            'image' => $data['core']['mark_ceedwork'],
+            'url'   => route('services'),
         ],
         [
             'name'  => 'Ceedwork Wyza',
-            'image' => 'https://placehold.co/280x90/ffffff/1BAA99/png?text=Ceedwork+Wyza',
-            'url'   => '/servicos/infraestrutura',
+            'image' => $data['core']['mark_wiza'],
+            'url'   => 'https://wyza.ceedwork-solution.com/',
         ],
     ];
 @endphp
@@ -24,6 +20,7 @@
         @foreach($brands as $brand)
             <li class="brands__item" data-reveal="zoom" style="--reveal-delay:{{ $loop->index * 120 }}ms">
                 <a href="{{ url($brand['url']) }}"
+                   target="_blank"
                    class="brands__link"
                    title="{{ $brand['name'] }}"
                    @if(!empty($brand['external'])) target="_blank" rel="noopener noreferrer" @endif>

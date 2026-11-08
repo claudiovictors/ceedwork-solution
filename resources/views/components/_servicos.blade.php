@@ -20,7 +20,7 @@
         ],
         [
             'eyebrow' => 'Infraestrutura',
-            'title'   => 'Redes e equipamentos prontos para servir',
+            'title'   => 'Equipamentos prontos para servir',
             'text'    => 'Projetamos e instalamos a infraestrutura tecnológica da sua empresa, com <strong>acompanhamento e suporte contínuo</strong> para que o seu negócio nunca pare.',
             'link'    => '/servicos',
             'images'  => [

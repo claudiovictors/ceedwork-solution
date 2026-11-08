@@ -2,14 +2,11 @@
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
     $partners = $partners ?? [
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/13397C/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/1BAA99/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/031B3A/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/475593/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/2F96BF/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/13397C/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/1BAA99/png?text=Parceiro+1', 'url' => null],
-        ['name' => 'Parceiro 1', 'image' => 'https://placehold.co/220x80/ffffff/031B3A/png?text=Parceiro+1', 'url' => null],
+        ['name' => 'Blessed', 'image' => $data['banners']['blessed'], 'url' => null],
+        ['name' => 'Graças', 'image' => $data['banners']['gracas'], 'url' => null],
+        ['name' => 'Kuma', 'image' => $data['banners']['kuma'], 'url' => null],
+        ['name' => 'Maimona', 'image' => $data['banners']['maimona'], 'url' => null],
+        ['name' => 'Mama', 'image' => $data['banners']['mama'], 'url' => null],
     ];
 @endphp
 

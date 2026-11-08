@@ -5,8 +5,8 @@
 
             {{-- Coluna 1: marca + newsletter --}}
             <div class="footer__col footer__col--brand" data-reveal>
-                <a href="{{ url('/') }}" class="footer__logo">
-                    <img src="{{ asset('assets/images/logo-white.png') }}" alt="Ceedwork">
+                <a href="{{ route('home') }}" class="footer__logo">
+                    <img src="{{ $data['core']['logo_white'] }}" alt="Ceedwork">
                 </a>
 
                 <p>Soluções de tecnologia para o seu negócio crescer.</p>
@@ -25,17 +25,17 @@
             <div class="footer__col" data-reveal style="--reveal-delay:120ms">
                 <h3 class="footer__title">Serviços</h3>
                 <ul class="footer__links">
-                    <li><a href="{{ url('/servicos') }}">Desenvolvimento de Software</a></li>
-                    <li><a href="{{ url('/servicos') }}">Infraestrutura e Redes</a></li>
-                    <li><a href="{{ url('/servicos') }}">Consultoria</a></li>
+                    <li><a href="{{ route('services')}}">Desenvolvimento de Software</a></li>
+                    <li><a href="{{ route('services')}}">Infraestrutura e Redes</a></li>
+                    <li><a href="{{ route('services')}}">Consultoria</a></li>
                 </ul>
 
                 <h3 class="footer__title">Empresa</h3>
                 <ul class="footer__links">
-                    <li><a href="{{ url('/sobre-nos') }}">Sobre nós</a></li>
-                    <li><a href="{{ url('/portfolio') }}">Portfólio</a></li>
-                    <li><a href="{{ url('/blog') }}">Blog</a></li>
-                    <li><a href="{{ url('/noticias') }}">Notícias</a></li>
+                    <li><a href="{{ route('about') }}">Sobre nós</a></li>
+                    <li><a href="{{ route('portfolio') }}">Portfólio</a></li>
+                    <li><a href="{{ route('news') }}">Blog</a></li>
+                    <li><a href="{{ route('news') }}">Notícias</a></li>
                 </ul>
             </div>
 
@@ -76,10 +76,10 @@
 
         {{-- Redes sociais --}}
         <ul class="footer__social">
-            <li><a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a></li>
-            <li><a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a></li>
-            <li><a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a></li>
-            <li><a href="#" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a></li>
+            <li><a href="#" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
+            <li><a href="#" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+            <li><a href="#" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
+            <li><a href="#" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
         </ul>
 
         <p class="footer__copy">

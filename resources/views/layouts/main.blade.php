@@ -8,7 +8,7 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ $data['core']['favicon'] }}" type="image/x-icon">
     <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
