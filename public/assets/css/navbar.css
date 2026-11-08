@@ -137,14 +137,28 @@ a.topbar__item:hover {
     justify-content: center;
     width: 44px;
     height: 44px;
-    margin: auto var(--gutter) auto 0;
     border-radius: var(--radius-md);
     background: var(--color-white);
     color: var(--color-primary);
     font-size: 1.75rem;
 }
 
+/* Partes da gaveta: só existem no mobile/tablet */
+.drawer__head,
+.drawer__label,
+.drawer__extra,
+.navbar__overlay {
+    display: none;
+}
+
+/* ==========================================================================
+   Tablet / Mobile: menu em gaveta (drawer) à esquerda
+   ========================================================================== */
 @media (max-width: 1024px) {
+    html.menu-open {
+        overflow: hidden;
+    }
+
     .navbar {
         position: relative;
         min-height: 72px;
@@ -152,7 +166,15 @@ a.topbar__item:hover {
         box-shadow: var(--shadow-sm);
     }
 
+    /* hambúrguer à esquerda, logo ao lado */
+    .navbar__toggle {
+        display: flex;
+        margin: auto 0 auto var(--gutter);
+        background: var(--color-background);
+    }
+
     .navbar__panel--brand {
+        padding-left: var(--space-3);
         clip-path: none;
     }
 
@@ -160,40 +182,187 @@ a.topbar__item:hover {
         height: 42px;
     }
 
-    .navbar__toggle {
-        display: flex;
-        background: var(--color-background);
-    }
-
+    /* ---------- Gaveta ---------- */
     .navbar__panel--menu {
-        display: none;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
+        bottom: 0;
         left: 0;
-        right: 0;
-        padding: var(--space-4) 1rem var(--space-6);
+        z-index: 200;
+        flex-direction: column;
+        align-items: stretch;
+        width: min(86vw, 340px);
+        padding: 0;
+        overflow-y: auto;
+        background: var(--color-primary);
+        color: var(--color-white);
         clip-path: none;
-        box-shadow: var(--shadow-md);
-        border-top: 1px solid var(--border);
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition:
+            transform 0.3s ease,
+            visibility 0s linear 0.3s;
     }
 
     .navbar__panel--menu.is-open {
-        display: block;
+        transform: none;
+        visibility: visible;
+        transition: transform 0.3s ease;
     }
 
+    /* cabeçalho: logo + fechar */
+    .drawer__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-4) var(--space-6);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .drawer__brand img {
+        height: 36px;
+        width: auto;
+    }
+
+    .drawer__close {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-md);
+        color: var(--color-white);
+        font-size: 1.75rem;
+        transition: background var(--transition);
+    }
+
+    .drawer__close:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* títulos das secções: NAVEGAÇÃO, CONTACTOS... */
+    .drawer__label {
+        display: block;
+        padding: var(--space-6) var(--space-6) var(--space-2);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* links */
     .navbar__links {
         flex-direction: column;
         align-items: stretch;
-        gap: var(--space-1);
+        gap: 0;
+        padding-bottom: var(--space-4);
     }
 
-    .navbar__links a {
-        padding: 12px 16px;
-        border-radius: var(--radius-md);
+    .navbar__panel--menu .navbar__links a {
+        padding: 12px var(--space-6);
+        border-radius: 0;
+        font-size: 1rem;
+        color: var(--color-white);
+        white-space: normal;
+    }
+
+    .navbar__panel--menu .navbar__links a:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--color-white);
+    }
+
+    .navbar__panel--menu .navbar__links a.active {
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: inset 3px 0 0 var(--color-teal);
+        color: var(--color-aqua);
+    }
+
+    /* contactos + redes sociais, encostados ao fundo */
+    .drawer__extra {
+        display: flex;
+        flex-direction: column;
+        margin-top: auto;
+        padding-bottom: var(--space-8);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .drawer__contacts a,
+    .drawer__contacts span {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: 10px var(--space-6);
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.85);
+        transition:
+            background var(--transition),
+            color var(--transition);
+    }
+
+    .drawer__contacts a:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--color-white);
+    }
+
+    .drawer__contacts i {
+        font-size: 1.25rem;
+        color: var(--color-aqua);
+    }
+
+    .drawer__social {
+        display: flex;
+        gap: var(--space-3);
+        padding: var(--space-2) var(--space-6) 0;
+    }
+
+    .drawer__social a {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--color-white);
+        font-size: 1.2rem;
+        transition: background var(--transition);
+    }
+
+    .drawer__social a:hover {
+        background: var(--color-teal);
+    }
+
+    .navbar__panel--menu a:focus-visible,
+    .drawer__close:focus-visible {
+        outline-color: var(--color-aqua);
+        outline-offset: -2px;
+    }
+
+    /* fundo escuro atrás da gaveta */
+    .navbar__overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 150;
+        background: rgba(1, 4, 20, 0.6);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.3s ease,
+            visibility 0s linear 0.3s;
+    }
+
+    .navbar__overlay.is-open {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease;
     }
 }
 
 @media (max-width: 768px) {
+    .topbar {
+        display: none;
+    }
+    
     .topbar__inner {
         justify-content: space-between;
         gap: var(--space-3);

@@ -1,34 +1,8 @@
 .brands {
     position: relative;
     overflow: hidden;
-    padding-block: var(--space-16);
+    padding-block: var(--space-12);
     background: var(--bg-body);
-}
-
-.brands::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        90deg,
-        rgba(3, 27, 58, 0.045) 0 22px,
-        transparent 22px 52px
-    );
-    -webkit-mask-image: linear-gradient(
-        90deg,
-        transparent,
-        #000 25%,
-        #000 75%,
-        transparent
-    );
-    mask-image: linear-gradient(
-        90deg,
-        transparent,
-        #000 25%,
-        #000 75%,
-        transparent
-    );
-    pointer-events: none;
 }
 
 .brands__list {
@@ -50,7 +24,7 @@
     content: "";
     position: absolute;
     z-index: 0;
-    width: 260px;
+    width: 200px;
     aspect-ratio: 1;
     border-radius: 50%;
     background: rgba(3, 27, 58, 0.05);
@@ -71,12 +45,14 @@
     position: relative;
     z-index: 1;
     display: block;
-    padding: var(--space-6) var(--space-8);
+    padding: var(--space-4) var(--space-6);
 }
 
+/* logos mais pequenas, sem distorcer */
 .brands__link img {
-    width: min(100%, 280px);
-    height: auto;
+    width: 130px;
+    height: 90px;
+    object-fit: contain;
     transition: transform 0.4s ease;
 }
 
@@ -87,7 +63,7 @@
 
 @media (max-width: 768px) {
     .brands {
-        padding-block: var(--space-12);
+        padding-block: var(--space-8);
     }
 
     .brands__list {
@@ -96,10 +72,11 @@
     }
 
     .brands__item::before {
-        width: 200px;
+        width: 160px;
     }
 
     .brands__link img {
-        width: min(100%, 240px);
+        width: 110px;
+        height: 76px;
     }
 }

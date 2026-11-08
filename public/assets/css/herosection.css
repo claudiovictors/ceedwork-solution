@@ -3,18 +3,13 @@
     overflow: hidden;
     padding-block: var(--space-16) calc(var(--space-16) + 40px);
     color: var(--color-white);
-    background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(47, 150, 191, 0.25),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(27, 170, 153, 0.18),
-            transparent 40%
-        ),
-        var(--color-secondary);
+    /* imagem de fundo + véu azul, igual ao page-header */
+    background-color: var(--color-secondary);
+    background-image:
+        linear-gradient(105deg, rgba(3, 27, 58, 0.92), rgba(19, 57, 124, 0.78)),
+        var(--hero-bg, none);
+    background-size: cover;
+    background-position: center;
 }
 
 .hero__container {
@@ -129,15 +124,11 @@
 
     .hero__container {
         grid-template-columns: 1fr;
-        gap: var(--space-12);
     }
 
-    .hero__content {
-        order: -1;
-    }
-
-    .hero__media::before {
-        inset: 12px -8px -12px 12px;
+    /* no mobile a imagem de destaque não aparece */
+    .hero__media {
+        display: none;
     }
 
     .hero__curve {

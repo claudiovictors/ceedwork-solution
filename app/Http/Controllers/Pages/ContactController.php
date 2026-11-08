@@ -32,22 +32,22 @@ class ContactController extends Controller
         }
 
         $data = $request->validate([
-            'name'    => ['required', 'string', 'max:100'],
-            'email'   => ['required', 'email', 'max:150'],
-            'phone'   => ['nullable', 'string', 'max:30', 'regex:/^[0-9+\s()\-]{7,30}$/'],
+            'name' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'email', 'max:150'],
+            'phone' => ['nullable', 'string', 'max:30', 'regex:/^[0-9+\s()\-]{7,30}$/'],
             'subject' => ['required', Rule::in(self::SUBJECTS)],
             'message' => ['required', 'string', 'min:10', 'max:3000'],
         ], [
             'required' => 'O campo :attribute é obrigatório.',
-            'email'    => 'Indique um email válido.',
-            'max'      => 'O campo :attribute é demasiado longo.',
-            'min'      => 'A mensagem deve ter pelo menos :min caracteres.',
-            'in'       => 'Escolha um assunto da lista.',
-            'regex'    => 'Indique um número de telefone válido.',
+            'email' => 'Indique um email válido.',
+            'max' => 'O campo :attribute é demasiado longo.',
+            'min' => 'A mensagem deve ter pelo menos :min caracteres.',
+            'in' => 'Escolha um assunto da lista.',
+            'regex' => 'Indique um número de telefone válido.',
         ], [
-            'name'    => 'nome',
-            'email'   => 'email',
-            'phone'   => 'telefone',
+            'name' => 'nome',
+            'email' => 'email',
+            'phone' => 'telefone',
             'subject' => 'assunto',
             'message' => 'mensagem',
         ]);
@@ -55,22 +55,22 @@ class ContactController extends Controller
         $body = implode("\n", [
             'Nova mensagem pelo site da Ceedwork',
             '',
-            'Nome: ' . $data['name'],
-            'Email: ' . $data['email'],
-            'Telefone: ' . ($data['phone'] ?? '—'),
-            'Assunto: ' . $data['subject'],
+            'Nome: '.$data['name'],
+            'Email: '.$data['email'],
+            'Telefone: '.($data['phone'] ?? '—'),
+            'Assunto: '.$data['subject'],
             '',
             'Mensagem:',
             $data['message'],
             '',
-            'IP: ' . $request->ip(),
+            'IP: '.$request->ip(),
         ]);
 
         try {
             Mail::raw($body, function ($message) use ($data) {
                 $message->to(config('mail.from.address'))
                     ->replyTo($data['email'], $data['name'])
-                    ->subject('[Site] ' . $data['subject']);
+                    ->subject('[Site] '.$data['subject']);
             });
         } catch (\Throwable $e) {
             report($e);

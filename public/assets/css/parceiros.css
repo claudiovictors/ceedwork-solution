@@ -48,7 +48,7 @@
 .partners__item img {
     width: auto;
     max-width: 85%;
-    max-height: 56px;
+    max-height: 96px;
     object-fit: contain;
     transition: transform 0.4s ease;
 }

@@ -1,0 +1,105 @@
+.error-page {
+  padding-block: var(--space-16) var(--space-24);
+}
+
+.error-page__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+/* ---------- 4 0 4 ---------- */
+.error-page__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.04em;
+  font-family: var(--font-heading);
+  font-size: clamp(6rem, 17vw, 11rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-secondary);
+}
+
+/* o "0" é um círculo teal com uma lupa */
+.error-page__zero {
+  display: grid;
+  place-items: center;
+  width: 0.78em;
+  height: 0.78em;
+  border: 0.09em solid var(--color-teal);
+  border-radius: 50%;
+  color: var(--color-teal);
+}
+
+.error-page__zero i {
+  font-size: 0.4em;
+}
+
+/* ---------- Texto ---------- */
+.error-page__title {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-3xl);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.error-page__content > p {
+  max-width: 48ch;
+}
+
+.error-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block: var(--space-8);
+}
+
+.error-page__hint {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.error-page__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.error-page__links a {
+  display: inline-block;
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.error-page__links a:hover {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 960px) {
+  .error-page {
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .error-page__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .error-page__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
