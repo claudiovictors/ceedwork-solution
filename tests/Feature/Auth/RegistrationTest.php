@@ -9,23 +9,21 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_screen_can_be_rendered(): void
+    public function test_the_registration_screen_is_not_available(): void
     {
-        $response = $this->get('/register');
-
-        $response->assertStatus(200);
+        $this->get('/ceed-admin/register')
+            ->assertNotFound();
     }
 
-    public function test_new_users_can_register(): void
+    public function test_public_registration_is_disabled(): void
     {
-        $response = $this->post('/register', [
+        $this->post('/ceed-admin/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-        ]);
+        ])->assertNotFound();
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertGuest();
     }
 }

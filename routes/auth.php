@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Rotas responsáveis pela autenticação dos utilizadores administrativos,
-| incluindo registo, login, recuperação de palavra-passe e verificação
-| de endereço de e-mail.
+| incluindo login, recuperação de palavra-passe e verificação de
+| endereço de e-mail. O registo público está desativado.
 |
 | Prefixo: /ceed-admin
 |
@@ -35,24 +34,6 @@ use Illuminate\Support\Facades\Route;
  * Middleware: guest
  */
 Route::middleware('guest')->prefix('ceed-admin')->group(function () {
-
-    /**
-     * Exibe o formulário de registo de um novo administrador.
-     *
-     * GET /ceed-admin/register
-     * Controller: RegisteredUserController::create
-     * Route name: register
-     */
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
-
-    /**
-     * Processa o registo de um novo administrador.
-     *
-     * POST /ceed-admin/register
-     * Controller: RegisteredUserController::store
-     */
-    Route::post('register', [RegisteredUserController::class, 'store']);
 
     /**
      * Exibe o formulário de autenticação administrativa.
@@ -112,7 +93,6 @@ Route::middleware('guest')->prefix('ceed-admin')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
 });
-
 
 /**
  * ------------------------------------------------------------------------
