@@ -88,6 +88,8 @@
                 </div>
             @endisset
 
+            <x-admin-flash />
+
             {{ $slot }}
 
         </main>

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EditorUploadController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +46,25 @@ Route::middleware(['auth', 'admin'])->prefix('ceed-admin')->group(function (): v
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    /**
+     * --------------------------------------------------------------------
+     * News Management
+     * --------------------------------------------------------------------
+     *
+     * CRUD de notícias, publicação e uploads do editor de conteúdo.
+     */
+    Route::prefix('news')->name('admin.news.')->group(function (): void {
+        Route::get('/', [PostController::class, 'index'])->name('index');
+        Route::get('/create', [PostController::class, 'create'])->name('create');
+        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
+        Route::put('/{post}', [PostController::class, 'update'])->name('update');
+        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+        Route::patch('/{post}/toggle-status', [PostController::class, 'toggleStatus'])->name('toggle-status');
+    });
+
+    Route::post('/uploads/editor', [EditorUploadController::class, 'store'])
+        ->middleware('throttle:60,1')
+        ->name('admin.uploads.editor');
 });
