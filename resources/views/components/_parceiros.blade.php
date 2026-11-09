@@ -2,10 +2,10 @@
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
     $partners = $partners ?? [
+        ['name' => 'Maimona', 'image' => $data['banners']['maimona'], 'url' => null],
         ['name' => 'Blessed', 'image' => $data['banners']['blessed'], 'url' => null],
         ['name' => 'Graças', 'image' => $data['banners']['gracas'], 'url' => null],
         ['name' => 'Kuma', 'image' => $data['banners']['kuma'], 'url' => null],
-        ['name' => 'Maimona', 'image' => $data['banners']['maimona'], 'url' => null],
         ['name' => 'Mama', 'image' => $data['banners']['mama'], 'url' => null],
     ];
 @endphp
@@ -24,10 +24,10 @@
                     <li class="partners__item">
                         @if(!empty($partner['url']))
                             <a href="{{ $partner['url'] }}" title="{{ $partner['name'] }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ $src($partner['image']) }}" alt="{{ $partner['name'] }}" loading="lazy">
+                                <img src="{{ asset($src($partner['image'])) }}" alt="{{ $partner['name'] }}" loading="lazy">
                             </a>
                         @else
-                            <img src="{{ $src($partner['image']) }}" alt="{{ $partner['name'] }}" loading="lazy">
+                            <img src="{{ asset($src($partner['image'])) }}" alt="{{ $partner['name'] }}" loading="lazy">
                         @endif
                     </li>
                 @endforeach

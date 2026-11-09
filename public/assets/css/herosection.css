@@ -47,7 +47,6 @@
 
 .hero__content {
     padding-top: var(--space-6);
-    border-top: 3px solid var(--color-teal);
 }
 
 .hero__title {

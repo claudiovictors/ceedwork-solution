@@ -1,8 +1,8 @@
-<section class="hero" style="--hero-bg: url('{{ $data [ 'banners' ][ 'herosection' ] }}')">
+<section class="hero" style="--hero-bg: url('{{ asset($data[ 'banners' ][ 'herosection' ]) }}')">
     <div class="hero__container">
 
         <div class="hero__media">
-            <img src="{{ $data [ 'banners' ][ 'herosection' ] }}" alt="Equipa da Ceedwork a trabalhar" loading="eager" fetchpriority="high">
+            <img src="{{ asset($data [ 'banners' ][ 'herosection' ]) }}" alt="Equipa da Ceedwork a trabalhar" loading="eager" fetchpriority="high">
         </div>
 
         <div class="hero__content">

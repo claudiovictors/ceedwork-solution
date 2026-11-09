@@ -6,7 +6,7 @@
             {{-- Coluna 1: marca + newsletter --}}
             <div class="footer__col footer__col--brand" data-reveal>
                 <a href="{{ route('home') }}" class="footer__logo">
-                    <img src="{{ $data['core']['logo_white'] }}" alt="Ceedwork">
+                    <img src="{{ asset($data['core']['logo_white']) }}" alt="Ceedwork">
                 </a>
 
                 <p>Soluções de tecnologia para o seu negócio crescer.</p>
@@ -87,13 +87,12 @@
         </p>
     </div>
 
-    <!--<a href="#" class="footer__top" id="backToTop" aria-label="Voltar ao topo">
-        <i class='bx bx-chevron-up'></i>
-    </a>-->
-
     <a href="#" class="footer__top" id="backToTop" aria-label="Voltar ao topo">
-        <i class='bx bx-message-square-dots'></i>
+        <i class='bx bx-chevron-up'></i>
     </a>
+
+    @include('components._assistant')
+
 </footer>
 
 <script>

@@ -30,6 +30,7 @@ if (! function_exists('site_images')) {
                 'logo_white' => 'assets/images/core/logo-white.png',
                 'mark_ceedwork' => 'assets/images/core/mark-ceedwork.png',
                 'mark_wiza' => 'assets/images/core/mark-wiza.png',
+                'mark_candonga' => 'assets/images/core/mark-candonga.png',
             ],
         ];
     }

@@ -12,6 +12,11 @@
             'image' => $data['core']['mark_wiza'],
             'url'   => 'https://wyza.ceedwork-solution.com/',
         ],
+        [
+            'name'  => 'CANDONGA',
+            'image' => $data['core']['mark_candonga'],
+            'url'   => route('services'),
+        ],
     ];
 @endphp
 

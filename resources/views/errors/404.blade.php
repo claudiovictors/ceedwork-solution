@@ -2,10 +2,6 @@
 
 @section('title', 'Página não encontrada | Ceedwork')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/errors.css') }}">
-@endpush
-
 @section('content')
 <section class="error-page">
     <div class="container error-page__inner">
@@ -22,20 +18,21 @@
             <p>A página que procura não existe, mudou de endereço ou já não está disponível.</p>
 
             <div class="error-page__actions">
-                <a href="{{ url('/') }}" class="btn">
+                <a href="{{ route('home') }}" class="btn">
                     <i class='bx bx-home-alt' aria-hidden="true"></i> Voltar ao início
                 </a>
-                <a href="{{ url('/contacts') }}" class="btn btn--outline">Fale connosco</a>
+                <a href="{{ route('contact') }}" class="btn btn--outline">Fale connosco</a>
             </div>
 
             <p class="error-page__hint">Ou vá diretamente para:</p>
 
             <ul class="error-page__links">
-                <li><a href="{{ url('/about-us') }}">Sobre nós</a></li>
-                <li><a href="{{ url('/services') }}">Serviços</a></li>
-                <li><a href="{{ url('/portfolio') }}">Portfólio</a></li>
-                <li><a href="{{ url('/news') }}">Notícias</a></li>
-                <li><a href="{{ url('/contacts') }}">Contactos</a></li>
+                <li><a href="{{ route('home') }}">Início</a></li>
+                <li><a href="{{ route('about') }}">Sobre nós</a></li>
+                <li><a href="{{ route('services') }}">Serviços</a></li>
+                <li><a href="{{ route('portfolio') }}">Portfólio</a></li>
+                <li><a href="{{ route('news') }}">Notícias</a></li>
+                <li><a href="{{ route('contact') }}">Contactos</a></li>
             </ul>
         </div>
     </div>

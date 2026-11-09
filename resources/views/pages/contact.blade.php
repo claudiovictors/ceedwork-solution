@@ -151,7 +151,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('contacts.send') }}" method="POST" id="contactForm" novalidate>
+            <form action="{{ route('contact.send') }}" method="POST" id="contactForm" novalidate>
                 @csrf
 
                 {{-- Honeypot anti-spam (escondido) --}}

@@ -28,7 +28,7 @@
 
         <div class="navbar__panel navbar__panel--brand">
             <a href="{{ route('home') }}" class="navbar__brand">
-                <img src="{{ $data['core']['logo'] }}" alt="Ceedwork">
+                <img src="{{ asset($data['core']['logo']) }}" alt="Ceedwork">
             </a>
         </div>
 
@@ -37,7 +37,7 @@
 
             <div class="drawer__head">
                 <a href="{{ route('home') }}" class="drawer__brand">
-                    <img src="{{ $data['core']['logo_white'] }}" alt="Ceedwork">
+                    <img src="{{ asset($data['core']['logo_white']) }}" alt="Ceedwork">
                 </a>
                 <button type="button" class="drawer__close" id="navbarClose" aria-label="Fechar menu">
                     <i class='bx bx-x'></i>
