@@ -27,6 +27,7 @@ if (! function_exists('site_images')) {
             'core' => [
                 'favicon' => 'assets/images/core/favicon.ico',
                 'logo' => 'assets/images/core/logo.png',
+                'logo_icon' => 'assets/images/core/logo_icon.png',
                 'logo_white' => 'assets/images/core/logo-white.png',
                 'mark_ceedwork' => 'assets/images/core/mark-ceedwork.png',
                 'mark_wiza' => 'assets/images/core/mark-wiza.png',

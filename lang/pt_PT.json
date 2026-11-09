@@ -1,0 +1,18 @@
+{
+    "Dashboard": "Painel de Controlo",
+    "Log in": "Iniciar sessão",
+    "Register": "Criar conta",
+    "Name": "Nome",
+    "Email": "Endereço de e-mail",
+    "Password": "Palavra-passe",
+    "Confirm Password": "Confirmar palavra-passe",
+    "Remember me": "Manter sessão iniciada",
+    "Log Out": "Terminar sessão",
+    "Profile": "Perfil",
+    "Save": "Guardar",
+    "Cancel": "Cancelar",
+    "Delete": "Eliminar",
+    "Update": "Atualizar",
+    "Forgot your password?": "Esqueceu-se da palavra-passe?",
+    "No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Não há problema. Introduza o seu endereço de e-mail e enviar-lhe-emos uma ligação para redefinir a sua palavra-passe."
+}

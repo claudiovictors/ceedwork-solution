@@ -13,13 +13,17 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <link rel="shortcut icon" href="{{ $data['core']['favicon'] }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ asset($data['core']['favicon']) }}" type="image/x-icon">
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <img
+                        src="{{ asset($data['core']['logo_icon']) }}"
+                        alt="{{ config('app.name') }}"
+                        style="width: 100px; height: 100px; object-fit: contain; display: block; margin: 0 auto;"
+                    />
                 </a>
             </div>
 

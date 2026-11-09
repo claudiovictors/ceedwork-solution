@@ -1,65 +1,204 @@
+
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\Pages\ContactController;
 use App\Http\Controllers\Pages\HomeController;
 use App\Http\Controllers\Pages\NewsController;
 use App\Http\Controllers\Pages\PortfolioController;
 use App\Http\Controllers\Pages\ServiceController;
+use Illuminate\Support\Facades\Route;
 
-Route::group([], function (): void {
+/*
+|--------------------------------------------------------------------------
+| Public Website Routes
+|--------------------------------------------------------------------------
+|
+| Rotas públicas do website institucional da Ceedwork-Solutions.
+|
+| Estas rotas permitem aos visitantes navegar pelo website, consultar
+| os serviços, conhecer os projetos, acompanhar notícias e contactar
+| a equipa da empresa.
+|
+| Middleware padrão: web
+|
+*/
 
-    // -----------------------------------------------------------------------
-    // Rota Principal (Página Inicial)
-    // -----------------------------------------------------------------------
-    Route::get('/', [HomeController::class, 'index'])
-        ->name('home');
 
-    // -----------------------------------------------------------------------
-    // Rota Sobre Nós
-    // -----------------------------------------------------------------------
-    Route::view('/about-us', 'pages.about')
-        ->name('about');
+/**
+ * ------------------------------------------------------------------------
+ * Home
+ * ------------------------------------------------------------------------
+ *
+ * Página inicial do website.
+ */
 
-    // -----------------------------------------------------------------------
-    // Rotas de Serviços
-    // -----------------------------------------------------------------------
-    Route::get('/services', [ServiceController::class, 'index'])
-        ->name('services');
+/**
+ * Exibe a página principal.
+ *
+ * GET /
+ * Controller: HomeController::index
+ * Route name: home
+ */
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
-    // -----------------------------------------------------------------------
-    // Rotas de Portfólio
-    // -----------------------------------------------------------------------
-    Route::get('/portfolio', [PortfolioController::class, 'index'])
-        ->name('portfolio');
 
-    // -----------------------------------------------------------------------
-    // Rotas de Notícias e Artigos
-    // -----------------------------------------------------------------------
-    Route::get('/news', [NewsController::class, 'index'])
-        ->name('news');
+/**
+ * ------------------------------------------------------------------------
+ * About Us
+ * ------------------------------------------------------------------------
+ *
+ * Informações institucionais sobre a empresa.
+ */
 
-    Route::get('/news/{slug}', [NewsController::class, 'show'])
-        ->name('news.show');
+/**
+ * Exibe a página Sobre Nós.
+ *
+ * GET /about-us
+ * View: pages.about
+ * Route name: about
+ */
+Route::view('/about-us', 'pages.about')
+    ->name('about');
 
-    // -----------------------------------------------------------------------
-    // Rotas de Contacto
-    // -----------------------------------------------------------------------
-    Route::get('/contact', [ContactController::class, 'show'])
-        ->name('contact');
 
-    Route::post('/contact', [ContactController::class, 'send'])
-        ->middleware('throttle:5,1')
-        ->name('contact.send');
+/**
+ * ------------------------------------------------------------------------
+ * Services
+ * ------------------------------------------------------------------------
+ *
+ * Apresentação dos serviços e soluções tecnológicas oferecidos
+ * pela Ceedwork-Solutions.
+ */
 
-    // -----------------------------------------------------------------------
-    // Rotas de Assistente
-    // -----------------------------------------------------------------------
-    Route::post('/assistant/chat', [AssistantController::class, 'chat'])
+/**
+ * Lista os serviços disponíveis.
+ *
+ * GET /services
+ * Controller: ServiceController::index
+ * Route name: services
+ */
+Route::get('/services', [ServiceController::class, 'index'])
+    ->name('services');
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Portfolio
+ * ------------------------------------------------------------------------
+ *
+ * Apresentação dos projetos e trabalhos desenvolvidos pela empresa.
+ */
+
+/**
+ * Lista os projetos do portfólio.
+ *
+ * GET /portfolio
+ * Controller: PortfolioController::index
+ * Route name: portfolio
+ */
+Route::get('/portfolio', [PortfolioController::class, 'index'])
+    ->name('portfolio');
+
+
+/**
+ * ------------------------------------------------------------------------
+ * News & Articles
+ * ------------------------------------------------------------------------
+ *
+ * Gestão e apresentação de notícias e artigos publicados no website.
+ */
+
+/**
+ * Lista as notícias e artigos publicados.
+ *
+ * GET /news
+ * Controller: NewsController::index
+ * Route name: news
+ */
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news');
+
+/**
+ * Exibe os detalhes de uma notícia através do seu slug.
+ *
+ * GET /news/{slug}
+ * Controller: NewsController::show
+ * Route name: news.show
+ *
+ * @param string $slug Identificador amigável da notícia.
+ */
+Route::get('/news/{slug}', [NewsController::class, 'show'])
+    ->name('news.show');
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Contact
+ * ------------------------------------------------------------------------
+ *
+ * Permite aos visitantes entrar em contacto com a equipa da empresa.
+ */
+
+/**
+ * Exibe o formulário de contacto.
+ *
+ * GET /contact
+ * Controller: ContactController::show
+ * Route name: contact
+ */
+Route::get('/contact', [ContactController::class, 'show'])
+    ->name('contact');
+
+/**
+ * Processa e envia uma mensagem submetida pelo formulário de contacto.
+ *
+ * POST /contact
+ * Controller: ContactController::send
+ * Middleware: throttle:5,1
+ * Route name: contact.send
+ *
+ * Limite: 5 pedidos por minuto.
+ */
+Route::post('/contact', [ContactController::class, 'send'])
+    ->middleware('throttle:5,1')
+    ->name('contact.send');
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Virtual Assistant
+ * ------------------------------------------------------------------------
+ *
+ * Endpoint responsável pelo processamento das mensagens enviadas
+ * ao assistente virtual do website.
+ */
+
+/**
+ * Processa uma mensagem enviada ao assistente virtual.
+ *
+ * POST /assistant/chat
+ * Controller: AssistantController::chat
+ * Middleware: throttle:15,1
+ * Route name: assistant.chat
+ *
+ * Limite: 15 pedidos por minuto.
+ */
+Route::post('/assistant/chat', [AssistantController::class, 'chat'])
     ->middleware('throttle:15,1')
     ->name('assistant.chat');
-});
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
+
+/*
+|--------------------------------------------------------------------------
+| Route Files
+|--------------------------------------------------------------------------
+|
+| Carregamento das rotas de autenticação e administração.
+|
+*/
+
+require __DIR__ . '/auth.php';
+
+require __DIR__ . '/admin.php';

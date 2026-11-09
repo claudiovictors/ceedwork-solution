@@ -1,13 +1,10 @@
-{{-- resources/views/components/_cta.blade.php --}}
-{{-- Chamada final reutilizável. Todas as variáveis são opcionais. --}}
 @php
     $eyebrow = $eyebrow ?? 'Vamos conversar';
     $title   = $title   ?? 'Tem um projeto em mente?';
     $text    = $text    ?? 'Fale connosco e receba uma proposta adaptada às suas necessidades.';
     $button  = $button  ?? 'Fale connosco';
-    $link    = $link    ?? '/contactos';
-    // Passa 'phone' => false para esconder a linha do telefone
-    $phone   = $phone   ?? ['label' => '+244 900 000 000', 'href' => 'tel:{{ $data['social']['whatsapp'] }}'];
+    $link    = $link    ?? route('contact');
+    $phone   = $phone   ?? ['label' => '+244 947 824 328', 'href' => 'tel:+244 947 824 328'];
 @endphp
 
 <section class="cta">
