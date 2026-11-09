@@ -3,8 +3,8 @@
     {{-- Barra superior --}}
     <div class="topbar">
         <div class="topbar__inner">
-            <a href="tel:+244900000000" class="topbar__item">
-                <i class='bx bx-phone-call'></i> +244 900 000 000
+            <a href="tel:+244 947 824 328" class="topbar__item">
+                <i class='bx bx-phone-call'></i> +244 947 824 328
             </a>
 
             <span class="topbar__item topbar__item--address">
@@ -59,7 +59,7 @@
                 <span class="drawer__label">Contactos</span>
 
                 <ul class="drawer__contacts">
-                    <li><a href="tel:+244900000000"><i class='bx bx-phone-call'></i> +244 900 000 000</a></li>
+                    <li><a href="tel:{{  $data['social']['whatsapp'] }}"><i class='bx bx-phone-call'></i> {{  $data['social']['whatsapp'] }}</a></li>
                     <li><a href="mailto:geral@ceedwork.co.ao"><i class='bx bx-envelope'></i> geral@ceedwork.co.ao</a>
                     </li>
                     <li><span><i class='bx bx-map'></i> Cabinda, Angola</span></li>
@@ -69,10 +69,11 @@
                 <span class="drawer__label">Redes sociais</span>
 
                 <ul class="drawer__social" aria-label="Redes sociais">
-                    <li><a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a></li>
-                    <li><a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a></li>
-                    <li><a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a></li>
-                    <li><a href="#" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a></li>
+                    <li><a href="{{  $data['social']['facebook'] }}" target="_blank" aria-label="Facebook"><i class='bx bxl-facebook'></i></a></li>
+                    <li><a href="{{  $data['social']['instagram'] }}" target="_blank" aria-label="Instagram"><i class='bx bxl-instagram'></i></a></li>
+                    <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
+                    <li><a href="{{  $data['social']['instagram'] }}" target="_blank" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a></li>
+                    <li><a href="{{  $data['social']['whatsapp'] }}" target="_blank" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a></li>
                 </ul>
             </div>
         </div>

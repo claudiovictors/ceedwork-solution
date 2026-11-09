@@ -32,6 +32,14 @@ if (! function_exists('site_images')) {
                 'mark_wiza' => 'assets/images/core/mark-wiza.png',
                 'mark_candonga' => 'assets/images/core/mark-candonga.png',
             ],
+
+            'social' => [
+                'facebook' => 'https://web.facebook.com/profile.php?id=100092213826946',
+                'instagram' => 'https://www.instagram.com/ceedwork_oficial/',
+                'linkedin' => 'https://www.linkedin.com/company/ceedwork-solution-lda/',
+                'tiktok' => 'https://www.tiktok.com/@ceedwork',
+                'whatsapp' => 'https://wa.me/+244947824328',
+            ],
         ];
     }
 }

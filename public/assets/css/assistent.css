@@ -196,6 +196,10 @@
   padding: 14px 16px;
 }
 
+input {
+  color: #333;
+}
+
 .typing span {
   width: 7px;
   height: 7px;

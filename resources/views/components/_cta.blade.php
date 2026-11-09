@@ -7,7 +7,7 @@
     $button  = $button  ?? 'Fale connosco';
     $link    = $link    ?? '/contactos';
     // Passa 'phone' => false para esconder a linha do telefone
-    $phone   = $phone   ?? ['label' => '+244 900 000 000', 'href' => 'tel:+244900000000'];
+    $phone   = $phone   ?? ['label' => '+244 900 000 000', 'href' => 'tel:{{ $data['social']['whatsapp'] }}'];
 @endphp
 
 <section class="cta">

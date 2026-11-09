@@ -60,7 +60,7 @@
                         <i class='bx bxs-phone'></i>
                         <div>
                             <h3 class="footer__title">Telefone</h3>
-                            <p><a href="tel:+244900000000">+244 900 000 000</a></p>
+                            <p><a href="tel:+244 947 824 328">+244 947 824 328</a></p>
                         </div>
                     </li>
                     <li>
@@ -76,10 +76,11 @@
 
         {{-- Redes sociais --}}
         <ul class="footer__social">
-            <li><a href="#" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
-            <li><a href="#" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
-            <li><a href="#" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
-            <li><a href="#" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
+            <li><a href="{{  $data['social']['facebook'] }}" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
+            <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
+            <li><a href="{{  $data['social']['instagram'] }}" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+            <li><a href="{{  $data['social']['linkedin'] }}" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
+            <li><a href="{{  $data['social']['whatsapp'] }}" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
         </ul>
 
         <p class="footer__copy">

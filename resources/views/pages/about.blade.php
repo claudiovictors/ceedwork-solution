@@ -40,7 +40,7 @@
 
         <div class="about-block__content" data-reveal="right" style="--reveal-delay:150ms">
             <p class="about-block__lead">
-                A Ceedwork-Solutions é uma empresa angolana de tecnologia especializada no desenvolvimento de soluções digitais inovadoras. Localizados na província de Cabinda, próxima à Mediateca de Cabinda, estamos comprometidos em oferecer serviços de alta qualidade que atendam às necessidades específicas dos nossos clientes.
+                A Ceedwork-Solutions é uma empresa angolana de tecnologia especializada no desenvolvimento de soluções digitais inovadoras. Localizados na província de Cabinda, próxima Rua Da Polícia, estamos comprometidos em oferecer serviços de alta qualidade que atendam às necessidades específicas dos nossos clientes.
             </p>
             <p>
                 Desde a nossa fundação, temos trabalhado incansavelmente para oferecer soluções tecnológicas que não apenas atendam às expectativas, mas que superem os padrões do mercado. Com uma equipe de profissionais experientes e dedicados, oferecemos soluções em <strong>desenvolvimento de software, sistemas web, aplicativos mobile e sites institucionais</strong>.

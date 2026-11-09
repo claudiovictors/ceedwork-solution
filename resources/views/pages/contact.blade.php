@@ -7,14 +7,14 @@
 @php
     // ---- Dados de contacto (troca pelos reais) ----
     $phones = [
-        ['label' => '+244 900 000 000', 'href' => 'tel:+244900000000'],
+        ['label' => '+244 947 824 328', 'href' => 'tel:+244 947 824 328'],
     ];
 
     $emails = [
         ['label' => 'info@ceedwork-solutions.com',     'href' => 'mailto:info@ceedwork-solutions.com'],
     ];
 
-    $whatsapp = 'https://wa.me/244900000000';
+    $whatsapp = 'https://wa.me/+244947824328';
     $mapUrl   = 'https://maps.app.goo.gl/g9L8ig8PieojeWMT8';
 
     // ---- Perguntas frequentes (exemplos: confirma e ajusta as respostas) ----
@@ -131,9 +131,11 @@
             </a>
 
             <ul class="contact-social" aria-label="Redes sociais">
-                <li><a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a></li>
-                <li><a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a></li>
-                <li><a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a></li>
+                <li><a href="{{  $data['social']['facebook'] }}" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
+                <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
+                <li><a href="{{  $data['social']['instagram'] }}" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+                <li><a href="{{  $data['social']['linkedin'] }}" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
+                <li><a href="{{  $data['social']['whatsapp'] }}" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
             </ul>
         </div>
 
