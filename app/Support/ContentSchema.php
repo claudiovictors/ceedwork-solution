@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Rules\HexColor;
+use App\Rules\ImageUrl;
 use App\Rules\SafeUrl;
 use Illuminate\Validation\Rule;
 
@@ -69,6 +70,10 @@ final class ContentSchema
         foreach ($fields as $key => $field) {
             $rules[$key] = self::fieldRules($field);
 
+            if (($field['type'] ?? null) === 'image') {
+                $rules["{$key}_url"] = ['nullable', 'string', new ImageUrl];
+            }
+
             if (($field['type'] ?? null) === 'repeater') {
                 foreach (($field['fields'] ?? []) as $subKey => $subField) {
                     $rules["{$key}.*.{$subKey}"] = self::fieldRules($subField);
@@ -93,6 +98,10 @@ final class ContentSchema
                 $name = "{$sectionKey}_{$fieldKey}";
                 $rules[$name] = self::fieldRules($field);
 
+                if (($field['type'] ?? null) === 'image') {
+                    $rules["{$name}_url"] = ['nullable', 'string', new ImageUrl];
+                }
+
                 if (($field['type'] ?? null) === 'repeater') {
                     foreach (($field['fields'] ?? []) as $subKey => $subField) {
                         $rules["{$name}.*.{$subKey}"] = self::fieldRules($subField);
@@ -114,6 +123,10 @@ final class ContentSchema
 
         foreach ($fields as $key => $field) {
             $attributes[$key] = $field['label'] ?? $key;
+
+            if (($field['type'] ?? null) === 'image') {
+                $attributes["{$key}_url"] = ($field['label'] ?? $key).' (URL)';
+            }
 
             if (($field['type'] ?? null) === 'repeater') {
                 foreach (($field['fields'] ?? []) as $subKey => $subField) {
@@ -140,6 +153,10 @@ final class ContentSchema
             foreach (($section['fields'] ?? []) as $fieldKey => $field) {
                 $name = "{$sectionKey}_{$fieldKey}";
                 $attributes[$name] = $field['label'] ?? $fieldKey;
+
+                if (($field['type'] ?? null) === 'image') {
+                    $attributes["{$name}_url"] = ($field['label'] ?? $fieldKey).' (URL)';
+                }
 
                 if (($field['type'] ?? null) === 'repeater') {
                     foreach (($field['fields'] ?? []) as $subKey => $subField) {

@@ -125,6 +125,49 @@ class PageContentManagementTest extends TestCase
         );
     }
 
+    public function test_featured_image_can_be_removed(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $payload = $this->pagePayload('home');
+        $payload['remove_hero_featured_image'] = '1';
+
+        $this->actingAs($admin)
+            ->put(route('admin.pages.update', 'home'), $payload)
+            ->assertSessionHasNoErrors();
+
+        $this->assertNull(app(PageContent::class)->get('home', 'hero', 'featured_image'));
+    }
+
+    public function test_images_can_be_set_via_url(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $payload = $this->pagePayload('home');
+        $payload['hero_featured_image_url'] = 'https://example.com/destaque.jpg';
+
+        $this->actingAs($admin)
+            ->put(route('admin.pages.update', 'home'), $payload)
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame(
+            'https://example.com/destaque.jpg',
+            app(PageContent::class)->get('home', 'hero', 'featured_image')
+        );
+    }
+
+    public function test_unsafe_image_urls_are_rejected(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $payload = $this->pagePayload('home');
+        $payload['hero_featured_image_url'] = 'javascript:alert(1)';
+
+        $this->actingAs($admin)
+            ->put(route('admin.pages.update', 'home'), $payload)
+            ->assertSessionHasErrors('hero_featured_image_url');
+    }
+
     public function test_invalid_images_are_rejected(): void
     {
         $admin = User::factory()->admin()->create();

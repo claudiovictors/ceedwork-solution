@@ -3,6 +3,8 @@
     'label',
     'current' => null,
     'removeName' => null,
+    'urlName' => null,
+    'urlValue' => null,
     'accept' => 'image/jpeg,image/png,image/webp',
     'help' => null,
 ])
@@ -56,6 +58,27 @@
                 class="block w-full cursor-pointer rounded-lg border border-[#dbe5f1] bg-white text-sm text-[#4a5568] file:mr-3 file:border-0 file:bg-[#eef4fb] file:px-3 file:py-2 file:text-sm file:font-semibold file:text-[#13397c] hover:file:bg-[#e0ecf9]"
                 @change="choose($event)"
             >
+
+            @if($urlName)
+                <div class="mt-3">
+                    <label for="{{ $urlName }}" class="block text-xs font-medium text-[#4a5568]">
+                        Ou indique o URL da imagem
+                    </label>
+
+                    <input
+                        id="{{ $urlName }}"
+                        name="{{ $urlName }}"
+                        type="text"
+                        value="{{ old($urlName, $urlValue) }}"
+                        placeholder="https://... ou assets/images/..."
+                        class="mt-1 block w-full rounded-lg border border-[#dbe5f1] bg-white px-3 py-2 text-sm text-[#4a5568] shadow-sm focus:border-[#2f96bf] focus:ring-[#2f96bf]"
+                    >
+
+                    @error($urlName)
+                        <p class="mt-1 text-xs font-medium text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endif
 
             @if($current)
                 <label class="mt-2 inline-flex items-center gap-2 text-xs font-medium text-[#4a5568]">

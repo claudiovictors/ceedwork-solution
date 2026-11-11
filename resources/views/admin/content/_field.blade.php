@@ -6,6 +6,7 @@
     $help = $field['help'] ?? null;
     $required = in_array('required', $field['rules'] ?? [], true);
     $inputClasses = 'mt-1 block w-full rounded-lg border-[#dbe5f1] text-sm text-[#1f2a3d] shadow-sm focus:border-[#2f96bf] focus:ring-[#2f96bf]';
+    $isExternalImage = is_string($value) && \Illuminate\Support\Str::startsWith($value, ['http://', 'https://', '//']);
 @endphp
 
 @if($type === 'image')
@@ -14,6 +15,8 @@
         :label="$label"
         :current="$value ? \App\Support\ImageUrl::for($value) : null"
         :remove-name="'remove_'.$name"
+        :url-name="$name.'_url'"
+        :url-value="$isExternalImage ? $value : null"
         :accept="! empty($field['allow_ico']) ? 'image/x-icon,image/vnd.microsoft.icon,image/png,image/jpeg,image/webp' : 'image/jpeg,image/png,image/webp'"
         :help="$help"
     />

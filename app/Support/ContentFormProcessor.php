@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 final class ContentFormProcessor
 {
@@ -57,6 +58,10 @@ final class ContentFormProcessor
         Request $request,
     ): ?string {
         $current = is_string($current) ? $current : null;
+        $urlName = "{$name}_url";
+        $url = $request->input($urlName);
+        $url = is_string($url) ? trim($url) : '';
+        $isExternal = $current !== null && Str::startsWith($current, ['http://', 'https://', '//']);
 
         if ($request->hasFile($name)) {
             $this->uploader->delete($current);
@@ -67,6 +72,18 @@ final class ContentFormProcessor
         if ($request->boolean("remove_{$name}")) {
             $this->uploader->delete($current);
 
+            return null;
+        }
+
+        if ($url !== '') {
+            if ($url !== $current) {
+                $this->uploader->delete($current);
+            }
+
+            return $url;
+        }
+
+        if ($request->exists($urlName) && $isExternal) {
             return null;
         }
 
