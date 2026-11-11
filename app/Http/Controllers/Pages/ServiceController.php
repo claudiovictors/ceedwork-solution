@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
+use App\Models\Service;
+use Illuminate\View\View;
 
 class ServiceController extends Controller
 {
-    public function index(): mixed
+    public function index(): View
     {
-        return view('pages.service');
+        $services = Service::query()
+            ->active()
+            ->with('items')
+            ->ordered()
+            ->get();
+
+        return view('pages.service', [
+            'services' => $services,
+        ]);
     }
 }

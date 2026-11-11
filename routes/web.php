@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 /**
  * ------------------------------------------------------------------------
  * Home
@@ -43,7 +42,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
-
 /**
  * ------------------------------------------------------------------------
  * About Us
@@ -61,7 +59,6 @@ Route::get('/', [HomeController::class, 'index'])
  */
 Route::view('/about-us', 'pages.about')
     ->name('about');
-
 
 /**
  * ------------------------------------------------------------------------
@@ -82,7 +79,6 @@ Route::view('/about-us', 'pages.about')
 Route::get('/services', [ServiceController::class, 'index'])
     ->name('services');
 
-
 /**
  * ------------------------------------------------------------------------
  * Portfolio
@@ -100,7 +96,6 @@ Route::get('/services', [ServiceController::class, 'index'])
  */
 Route::get('/portfolio', [PortfolioController::class, 'index'])
     ->name('portfolio');
-
 
 /**
  * ------------------------------------------------------------------------
@@ -123,15 +118,14 @@ Route::get('/news', [NewsController::class, 'index'])
 /**
  * Exibe os detalhes de uma notícia através do seu slug.
  *
- * GET /news/{slug}
+ * GET /news/{post}
  * Controller: NewsController::show
  * Route name: news.show
  *
- * @param string $slug Identificador amigável da notícia.
+ * @param  Post  $post  Notícia identificada pelo slug.
  */
-Route::get('/news/{slug}', [NewsController::class, 'show'])
+Route::get('/news/{post}', [NewsController::class, 'show'])
     ->name('news.show');
-
 
 /**
  * ------------------------------------------------------------------------
@@ -165,7 +159,6 @@ Route::post('/contact', [ContactController::class, 'send'])
     ->middleware('throttle:5,1')
     ->name('contact.send');
 
-
 /**
  * ------------------------------------------------------------------------
  * Virtual Assistant
@@ -189,7 +182,6 @@ Route::post('/assistant/chat', [AssistantController::class, 'chat'])
     ->middleware('throttle:15,1')
     ->name('assistant.chat');
 
-
 /*
 |--------------------------------------------------------------------------
 | Route Files
@@ -199,6 +191,6 @@ Route::post('/assistant/chat', [AssistantController::class, 'chat'])
 |
 */
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
-require __DIR__ . '/admin.php';
+require __DIR__.'/admin.php';

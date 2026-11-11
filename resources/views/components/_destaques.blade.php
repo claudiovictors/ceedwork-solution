@@ -1,43 +1,15 @@
 @php
+    // Aceita URL externa ou ficheiro local em public/assets/images
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
-    $posts = $posts ?? [
-        [
-            'title'   => 'Ceedwork lança nova plataforma de gestão',
-            'excerpt' => 'A Ceedwork apresentou a sua nova solução pensada para as necessidades das empresas angolanas, com foco em simplicidade e segurança.',
-            'image'   => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=75',
-            'date'    => '2026-07-01',
-            'url'     => '/noticias/1',
-        ],
-        [
-            'title'   => 'Presença marcante na feira de tecnologia',
-            'excerpt' => 'A equipa participou na edição deste ano, partilhando casos de sucesso e novas tendências em transformação digital.',
-            'image'   => 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=75',
-            'date'    => '2026-06-15',
-            'url'     => '/noticias/2',
-        ],
-        [
-            'title'   => 'Nova parceria reforça infraestrutura',
-            'excerpt' => 'Um novo acordo estratégico vai ampliar a capacidade de resposta e o suporte aos clientes em todo o país.',
-            'image'   => 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=75',
-            'date'    => '2026-05-05',
-            'url'     => '/noticias/3',
-        ],
-        [
-            'title'   => 'Workshop de segurança digital',
-            'excerpt' => 'Realizámos um workshop prático sobre boas práticas de cibersegurança para pequenas e médias empresas.',
-            'image'   => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=75',
-            'date'    => '2026-04-20',
-            'url'     => '/noticias/4',
-        ],
-        [
-            'title'   => 'Equipa cresce com novos talentos',
-            'excerpt' => 'Damos as boas-vindas a novos profissionais que vão reforçar as áreas de desenvolvimento e suporte técnico.',
-            'image'   => 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=75',
-            'date'    => '2026-03-10',
-            'url'     => '/noticias/5',
-        ],
-    ];
+    // Aceita Models (Post) vindos da base de dados e converte para o formato que o componente usa
+    $posts = collect($posts ?? [])->map(fn ($p) => [
+        'title'   => data_get($p, 'title'),
+        'excerpt' => data_get($p, 'excerpt'),
+        'image'   => data_get($p, 'cover_url') ?: 'https://placehold.co/800x500/F4F7FB/13397C/png?text=Ceedwork',
+        'date'    => data_get($p, 'published_at') ?: data_get($p, 'created_at') ?: now(),
+        'url'     => data_get($p, 'slug') ? route('news.show', data_get($p, 'slug')) : url('/news'),
+    ]);
 @endphp
 
 <section class="highlights">

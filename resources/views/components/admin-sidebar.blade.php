@@ -15,43 +15,41 @@
             [
                 'label' => 'Artigos / Blog',
                 'icon' => 'bx-news',
+                'route' => 'admin.news.index',
+                'active' => ['admin.news.index', 'admin.news.edit'],
             ],
             [
-                'label' => 'Páginas',
-                'icon' => 'bx-file',
+                'label' => 'Novo artigo',
+                'icon' => 'bx-plus-circle',
+                'route' => 'admin.news.create',
+                'active' => 'admin.news.create',
             ],
             [
                 'label' => 'Serviços',
                 'icon' => 'bx-briefcase',
+                'route' => 'admin.services.index',
+                'active' => ['admin.services.index', 'admin.services.edit'],
+            ],
+            [
+                'label' => 'Novo serviço',
+                'icon' => 'bx-plus-circle',
+                'route' => 'admin.services.create',
+                'active' => 'admin.services.create',
             ],
             [
                 'label' => 'Portfólio',
                 'icon' => 'bx-folder-open',
+                'route' => 'admin.portfolio.index',
+                'active' => ['admin.portfolio.index', 'admin.portfolio.edit'],
             ],
             [
-                'label' => 'Categorias e tags',
-                'icon' => 'bx-purchase-tag',
-            ],
-            [
-                'label' => 'Multimédia',
-                'icon' => 'bx-images',
-            ],
-        ],
-        'Comunicação' => [
-            [
-                'label' => 'Mensagens',
-                'icon' => 'bx-envelope',
-            ],
-            [
-                'label' => 'Utilizadores',
-                'icon' => 'bx-group',
+                'label' => 'Novo projeto',
+                'icon' => 'bx-plus-circle',
+                'route' => 'admin.portfolio.create',
+                'active' => 'admin.portfolio.create',
             ],
         ],
         'Sistema' => [
-            [
-                'label' => 'Configurações',
-                'icon' => 'bx-cog',
-            ],
             [
                 'label' => 'Meu perfil',
                 'icon' => 'bx-user-circle',
@@ -130,7 +128,7 @@
                     @foreach($items as $item)
                         @php
                             $hasRoute = ! empty($item['route']);
-                            $isActive = $hasRoute && isset($item['active']) && request()->routeIs($item['active']);
+                            $isActive = $hasRoute && isset($item['active']) && request()->routeIs(...(array) $item['active']);
                         @endphp
 
                         <a

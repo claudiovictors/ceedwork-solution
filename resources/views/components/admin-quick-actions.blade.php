@@ -1,45 +1,29 @@
 @php
-    $actions = [
+    $sections = [
         [
-            'title' => 'Novo artigo',
-            'description' => 'Escrever uma publicação para o blog',
-            'icon' => 'bx-edit',
-            'tone' => 'blue',
+            'title' => 'Artigos e blog',
+            'description' => 'Publicações e notícias do website',
+            'icon' => 'bx-news',
+            'indexRoute' => 'admin.news.index',
+            'createRoute' => 'admin.news.create',
+            'createLabel' => 'Novo artigo',
         ],
         [
-            'title' => 'Nova página',
-            'description' => 'Criar uma página institucional',
-            'icon' => 'bx-file-plus',
-            'tone' => 'sky',
-        ],
-        [
-            'title' => 'Novo projeto',
-            'description' => 'Adicionar um trabalho ao portfólio',
+            'title' => 'Serviços',
+            'description' => 'Serviços apresentados aos clientes',
             'icon' => 'bx-briefcase',
-            'tone' => 'amber',
+            'indexRoute' => 'admin.services.index',
+            'createRoute' => 'admin.services.create',
+            'createLabel' => 'Novo serviço',
         ],
         [
-            'title' => 'Gerir perfil',
-            'description' => 'Atualizar os seus dados de acesso',
-            'icon' => 'bx-user-circle',
-            'tone' => 'teal',
-            'href' => route('profile.edit'),
+            'title' => 'Portfólio',
+            'description' => 'Projetos apresentados no website',
+            'icon' => 'bx-folder-open',
+            'indexRoute' => 'admin.portfolio.index',
+            'createRoute' => 'admin.portfolio.create',
+            'createLabel' => 'Novo projeto',
         ],
-        [
-            'title' => 'Ver website',
-            'description' => 'Abrir o website público da Ceedwork',
-            'icon' => 'bx-globe',
-            'tone' => 'teal',
-            'href' => route('home'),
-            'external' => true,
-        ],
-    ];
-
-    $tones = [
-        'blue' => 'bg-[#e6edf7] text-[#13397c]',
-        'sky' => 'bg-[#e8f4f9] text-[#2f96bf]',
-        'amber' => 'bg-[#fdf3e7] text-[#9a5b13]',
-        'teal' => 'bg-[#e7f6f3] text-[#0d5c52]',
     ];
 @endphp
 
@@ -47,54 +31,44 @@
 
     <div>
         <h3 class="font-semibold text-[#031b3a]">
-            Ações rápidas
+            Gestão de conteúdo
         </h3>
 
         <p class="mt-1 text-xs text-[#4a5568]">
-            Atalhos para as tarefas mais frequentes.
+            Aceda aos conteúdos existentes ou crie novos.
         </p>
     </div>
 
     <div class="mt-5 space-y-2">
 
-        @foreach($actions as $action)
-            @php
-                $hasRoute = ! empty($action['href']);
-                $isExternal = ! empty($action['external']);
-                $tone = $tones[$action['tone']] ?? $tones['blue'];
-            @endphp
-
-            <a
-                href="{{ $hasRoute ? $action['href'] : '#' }}"
-                @if(! $hasRoute) aria-disabled="true" @click.prevent @endif
-                @if($isExternal) target="_blank" rel="noopener noreferrer" @endif
-                title="{{ $hasRoute ? $action['title'] : $action['title'] . ' — disponível em breve' }}"
-                class="group flex items-center gap-3 rounded-lg border p-3 transition
-                {{ $hasRoute
-                    ? 'border-[#eef2f8] hover:border-[#c3ebfa] hover:bg-[#f8fafd]'
-                    : 'cursor-not-allowed border-dashed border-[#e6edf7] bg-[#f8fafd]/60' }}"
-            >
-                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg {{ $tone }}">
-                    <i class="bx {{ $action['icon'] }} text-xl"></i>
-                </span>
-
-                <span class="min-w-0 flex-1">
-                    <span class="block truncate text-sm font-semibold {{ $hasRoute ? 'text-[#031b3a]' : 'text-[#4a5568]' }}">
-                        {{ $action['title'] }}
+        @foreach($sections as $section)
+            <div class="rounded-lg border border-[#eef2f8] p-3">
+                <div class="flex items-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e6edf7] text-[#13397c]">
+                        <i class="bx {{ $section['icon'] }} text-xl"></i>
                     </span>
-                    <span class="block truncate text-xs text-[#4a5568]/80">
-                        {{ $action['description'] }}
-                    </span>
-                </span>
 
-                @if($hasRoute)
-                    <i class="bx bx-chevron-right text-xl text-[#4a5568]/50 transition group-hover:translate-x-0.5 group-hover:text-[#031b3a]"></i>
-                @else
-                    <span class="shrink-0 rounded-full bg-white px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#4a5568] ring-1 ring-[#e6edf7]">
-                        Breve
-                    </span>
-                @endif
-            </a>
+                    <div class="min-w-0">
+                        <h4 class="truncate text-sm font-semibold text-[#031b3a]">{{ $section['title'] }}</h4>
+                        <p class="truncate text-xs text-[#4a5568]/80">{{ $section['description'] }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-3 flex gap-2">
+                    <a
+                        href="{{ route($section['indexRoute']) }}"
+                        class="inline-flex items-center gap-1 rounded-md bg-[#f4f7fb] px-2.5 py-1.5 text-xs font-semibold text-[#13397c] transition hover:bg-[#e6edf7]"
+                    >
+                        Gerir <i class="bx bx-right-arrow-alt text-sm"></i>
+                    </a>
+                    <a
+                        href="{{ route($section['createRoute']) }}"
+                        class="inline-flex items-center gap-1 rounded-md bg-[#e7f6f3] px-2.5 py-1.5 text-xs font-semibold text-[#0d5c52] transition hover:bg-[#d2eee8]"
+                    >
+                        <i class="bx bx-plus text-sm"></i> {{ $section['createLabel'] }}
+                    </a>
+                </div>
+            </div>
         @endforeach
 
     </div>

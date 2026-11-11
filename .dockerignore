@@ -1,0 +1,16 @@
+.env
+.env.*
+.git
+.github
+.idea
+.vscode
+node_modules
+vendor
+tests
+storage/app/private
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+storage/logs
+.phpunit.cache
+.phpunit.result.cache

@@ -122,7 +122,7 @@
                 </li>
                 <li>
                     <i class='bx bx-support' aria-hidden="true"></i>
-                    <span>Suporte técnico: <a href="mailto:suporte@ceedwork.co.ao">suporte@ceedwork.co.ao</a></span>
+                    <span>Suporte técnico: <a href="mailto:info@ceedwork-solutions.com">info@ceedwork-solutions.com</a></span>
                 </li>
             </ul>
 

@@ -18,14 +18,12 @@
             </p>
         </div>
 
-        @if(! $hasPosts)
-            <span
-                class="shrink-0 rounded-full bg-[#f4f7fb] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#4a5568]"
-                title="Módulo de artigos disponível em breve"
-            >
-                Em breve
-            </span>
-        @endif
+        <a
+            href="{{ route('admin.news.index') }}"
+            class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-[#13397c] transition hover:text-[#031b3a]"
+        >
+            Ver todos <i class="bx bx-right-arrow-alt text-base"></i>
+        </a>
 
     </div>
 
@@ -102,16 +100,16 @@
             </h4>
 
             <p class="mt-1 max-w-xs text-xs leading-5 text-[#4a5568]">
-                Quando o módulo de artigos estiver ativo, as publicações recentes aparecerão aqui.
+                Crie um artigo para o ver listado aqui.
             </p>
 
-            <span
-                aria-disabled="true"
-                class="mt-4 inline-flex cursor-not-allowed items-center gap-2 rounded-lg border border-dashed border-[#e6edf7] px-3 py-2 text-xs font-semibold text-[#4a5568]"
+            <a
+                href="{{ route('admin.news.create') }}"
+                class="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#e6edf7] px-3 py-2 text-xs font-semibold text-[#13397c] transition hover:border-[#c3ebfa] hover:bg-[#f8fafd]"
             >
                 <i class="bx bx-plus text-base"></i>
-                Novo artigo em breve
-            </span>
+                Criar artigo
+            </a>
 
         </div>
 

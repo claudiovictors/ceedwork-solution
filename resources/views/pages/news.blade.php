@@ -92,12 +92,13 @@
         ],
     ];
 
-    $featured   = $posts[0];
-    $categories = array_values(array_unique(array_column($posts, 'category')));
+    $posts = collect($posts)->values();
+    $featured = $posts->first();
+    $categories = $categories ?? $posts->pluck('category')->filter()->unique()->values();
 
     $postUrl = fn ($p) => url('/noticias/' . ($p['slug'] ?? Illuminate\Support\Str::slug($p['title'])));
     $date    = fn ($p) => \Carbon\Carbon::parse($p['date'])->locale('pt');
-    $fDate   = $date($featured);
+    $fDate   = $featured ? $date($featured) : null;
 @endphp
 
 <section class="news">
@@ -123,30 +124,32 @@
         </div>
 
         {{-- Featured post (hidden while filtering) --}}
-        <div class="news-featured" id="newsFeatured">
-            <article class="news-featured__inner" data-reveal>
-                <a href="{{ $postUrl($featured) }}" class="news-featured__media">
-                    <img src="{{ $src($featured['image']) }}" alt="{{ $featured['title'] }}" loading="eager">
-                    <span class="news-flag">Destaque</span>
-                </a>
-
-                <div class="news-featured__content">
-                    <ul class="news-meta">
-                        <li><i class='bx bx-calendar' aria-hidden="true"></i> <time datetime="{{ $fDate->toDateString() }}">{{ $fDate->translatedFormat('d \d\e F \d\e Y') }}</time></li>
-                        <li><i class='bx bx-category' aria-hidden="true"></i> {{ $featured['category'] }}</li>
-                    </ul>
-
-                    <h2 class="news-featured__title">
-                        <a href="{{ $postUrl($featured) }}">{{ $featured['title'] }}</a>
-                    </h2>
-                    <p>{{ $featured['excerpt'] }}</p>
-
-                    <a href="{{ $postUrl($featured) }}" class="btn">
-                        Ler notícia <i class='bx bx-right-arrow-alt'></i>
+        @if($featured)
+            <div class="news-featured" id="newsFeatured">
+                <article class="news-featured__inner" data-reveal>
+                    <a href="{{ $postUrl($featured) }}" class="news-featured__media">
+                        <img src="{{ $src($featured['image']) }}" alt="{{ $featured['title'] }}" loading="eager">
+                        <span class="news-flag">Destaque</span>
                     </a>
-                </div>
-            </article>
-        </div>
+
+                    <div class="news-featured__content">
+                        <ul class="news-meta">
+                            <li><i class='bx bx-calendar' aria-hidden="true"></i> <time datetime="{{ $fDate->toDateString() }}">{{ $fDate->translatedFormat('d \d\e F \d\e Y') }}</time></li>
+                            <li><i class='bx bx-category' aria-hidden="true"></i> {{ $featured['category'] }}</li>
+                        </ul>
+
+                        <h2 class="news-featured__title">
+                            <a href="{{ $postUrl($featured) }}">{{ $featured['title'] }}</a>
+                        </h2>
+                        <p>{{ $featured['excerpt'] }}</p>
+
+                        <a href="{{ $postUrl($featured) }}" class="btn">
+                            Ler notícia <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        @endif
 
         {{-- List --}}
         <div class="news-list__head">
@@ -233,7 +236,7 @@
         const render = () => {
             const filtering = category !== 'all' || query !== '';
 
-            featured.hidden = filtering;
+            if (featured) featured.hidden = filtering;
             title.textContent = filtering ? 'Resultados' : 'Últimas notícias';
 
             const matches = cards.filter(c => {

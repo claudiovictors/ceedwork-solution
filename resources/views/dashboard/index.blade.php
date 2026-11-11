@@ -2,7 +2,7 @@
 
     <x-slot name="title">Dashboard</x-slot>
     <x-slot name="pageTitle">Visão geral</x-slot>
-    <x-slot name="pageDescription">Resumo do conteúdo e atividade do website</x-slot>
+    <x-slot name="pageDescription">Acompanhe e gira artigos, serviços e projetos do website</x-slot>
 
     @include('dashboard.sections.overview', [
         'stats' => $stats ?? [],

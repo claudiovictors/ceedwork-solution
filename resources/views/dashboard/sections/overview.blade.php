@@ -12,36 +12,35 @@
             'value' => $stats['posts'] ?? '—',
             'icon' => 'bx-news',
             'tone' => 'blue',
-            'description' => array_key_exists('posts', $stats)
-                ? 'Publicações registadas no blog'
-                : 'Módulo de artigos por configurar',
+            'description' => 'Publicações registadas no blog',
         ],
         [
             'label' => 'Artigos publicados',
             'value' => $stats['published'] ?? '—',
             'icon' => 'bx-check-circle',
             'tone' => 'teal',
-            'description' => array_key_exists('published', $stats)
-                ? 'Conteúdos visíveis no website'
-                : 'Módulo de artigos por configurar',
+            'description' => 'Conteúdos visíveis no website',
         ],
         [
             'label' => 'Rascunhos',
             'value' => $stats['drafts'] ?? '—',
             'icon' => 'bx-edit-alt',
             'tone' => 'amber',
-            'description' => array_key_exists('drafts', $stats)
-                ? 'Conteúdos ainda não publicados'
-                : 'Módulo de artigos por configurar',
+            'description' => 'Conteúdos ainda não publicados',
         ],
         [
-            'label' => 'Mensagens recebidas',
-            'value' => $stats['messages'] ?? '—',
-            'icon' => 'bx-envelope',
+            'label' => 'Serviços ativos',
+            'value' => $stats['services'] ?? 0,
+            'icon' => 'bx-briefcase',
             'tone' => 'sky',
-            'description' => array_key_exists('messages', $stats)
-                ? 'Pedidos enviados pelo formulário'
-                : 'Módulo de mensagens por configurar',
+            'description' => 'Serviços disponíveis no website',
+        ],
+        [
+            'label' => 'Projetos publicados',
+            'value' => $stats['projects'] ?? 0,
+            'icon' => 'bx-folder-open',
+            'tone' => 'amber',
+            'description' => 'Projetos visíveis no portfólio',
         ],
     ];
 @endphp
@@ -102,7 +101,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
             @foreach($cards as $card)
                 <x-admin-stat-card
                     :label="$card['label']"
@@ -113,16 +112,6 @@
                 />
             @endforeach
         </div>
-
-        @if(empty($stats))
-            <p class="mt-3 flex items-start gap-2 text-xs leading-5 text-[#4a5568]/80">
-                <i class="bx bx-info-circle mt-0.5 text-base text-[#2f96bf]"></i>
-                <span>
-                    Os módulos de artigos e mensagens ainda não estão ativos. Os valores são neutros e serão
-                    preenchidos automaticamente quando estes módulos forem implementados.
-                </span>
-            </p>
-        @endif
 
     </div>
 
