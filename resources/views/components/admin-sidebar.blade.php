@@ -49,6 +49,20 @@
                 'active' => 'admin.portfolio.create',
             ],
         ],
+        'Website' => [
+            [
+                'label' => 'Configurações',
+                'icon' => 'bx-cog',
+                'route' => 'admin.settings.edit',
+                'active' => 'admin.settings.*',
+            ],
+            [
+                'label' => 'Páginas',
+                'icon' => 'bx-file',
+                'route' => 'admin.pages.index',
+                'active' => ['admin.pages.index', 'admin.pages.edit'],
+            ],
+        ],
         'Sistema' => [
             [
                 'label' => 'Meu perfil',

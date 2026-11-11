@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EditorUploadController;
+use App\Http\Controllers\Admin\PageContentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +100,33 @@ Route::middleware(['auth', 'admin'])->prefix('ceed-admin')->group(function (): v
         Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
         Route::patch('/{project}/toggle-published', [ProjectController::class, 'togglePublished'])->name('toggle-published');
+    });
+
+    /**
+     * --------------------------------------------------------------------
+     * Website Settings
+     * --------------------------------------------------------------------
+     *
+     * Configurações globais do site: identidade, contactos, redes
+     * sociais, aparência e assistente virtual.
+     */
+    Route::prefix('settings')->name('admin.settings.')->group(function (): void {
+        Route::get('/', [SettingsController::class, 'edit'])->name('edit');
+        Route::put('/{group}', [SettingsController::class, 'update'])->name('update');
+    });
+
+    /**
+     * --------------------------------------------------------------------
+     * Page Content
+     * --------------------------------------------------------------------
+     *
+     * Conteúdo editável das páginas públicas, organizado por secções.
+     */
+    Route::prefix('pages')->name('admin.pages.')->group(function (): void {
+        Route::get('/', [PageContentController::class, 'index'])->name('index');
+        Route::get('/{page}/edit', [PageContentController::class, 'edit'])->name('edit');
+        Route::put('/{page}', [PageContentController::class, 'update'])->name('update');
+        Route::delete('/{page}/{section}', [PageContentController::class, 'restore'])->name('restore');
     });
 
     Route::post('/uploads/editor', [EditorUploadController::class, 'store'])
