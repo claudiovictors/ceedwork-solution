@@ -20,6 +20,10 @@
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
     $u   = fn ($id) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&w=900&q=75";
 
+    $address = $site->get('contact.address');
+    $mapUrl = $site->get('contact.map_url');
+    $mapEmbed = $site->get('contact.map_embed_url');
+
     $values = [
         ['icon' => 'bx-medal',        'title' => 'Excelência',  'text' => 'Compromisso com a qualidade em todos os nossos serviços.'],
         ['icon' => 'bx-bulb',         'title' => 'Inovação',    'text' => 'Busca constante por soluções criativas e eficientes.'],
@@ -115,11 +119,13 @@
                 <span class="info-card__icon" aria-hidden="true"><i class='bx bxs-map'></i></span>
                 <div>
                     <h3>Angola - Cabinda</h3>
-                    <p> Rua Da Polícia, Cabinda</p>
-                    <a href="https://maps.app.goo.gl/g9L8ig8PieojeWMT8"
-                       class="btn btn--outline" target="_blank" rel="noopener noreferrer">
-                        Ver no mapa <i class='bx bx-right-arrow-alt'></i>
-                    </a>
+                    <p>{{ $address ?: 'Cabinda, Angola' }}</p>
+                    @if($mapUrl)
+                        <a href="{{ $mapUrl }}"
+                           class="btn btn--outline" target="_blank" rel="noopener noreferrer">
+                            Ver no mapa <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    @endif
                 </div>
             </article>
 
@@ -135,5 +141,7 @@
 </section>
 
 {{-- MAPA --}}
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0581698972233!2d12.188846399999997!3d-5.5583968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1a5dd3f0bb5f797d%3A0xeeae68a407b38dfe!2sCeedwork-solution%2CLda!5e0!3m2!1spt-PT!2sao!4v1793964279518!5m2!1spt-PT!2sao" width="100%" style="margin-bottom: 50px;" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+@if($mapEmbed)
+    <iframe src="{{ $mapEmbed }}" width="100%" style="margin-bottom: 50px;" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+@endif
 @endsection

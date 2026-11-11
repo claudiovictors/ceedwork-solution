@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\SiteSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class AssistantController extends Controller
 {
+    public function __construct(private readonly SiteSettings $settings) {}
 
     public function chat(Request $request): JsonResponse
     {
@@ -18,14 +20,20 @@ class AssistantController extends Controller
             'messages.*.text' => ['required', 'string', 'max:1000'],
         ]);
 
+        if (! $this->settings->get('assistant.enabled', true)) {
+            return response()->json([
+                'message' => 'O assistente não está disponível neste momento.',
+            ], 503);
+        }
+
         $key = config('services.groq.key');
         $model = config('services.groq.model', 'openai/gpt-oss-120b');
 
-        if (!$key) {
+        if (! $key) {
             Log::error('Assistente: GROQ_API_KEY não está configurada.');
 
             return response()->json([
-                'message' => 'O assistente não está disponível neste momento.'
+                'message' => 'O assistente não está disponível neste momento.',
             ], 503);
         }
 
@@ -38,7 +46,7 @@ class AssistantController extends Controller
 
         if ($messages->isEmpty() || $messages->last()['role'] !== 'user') {
             return response()->json([
-                'message' => 'Mensagem inválida.'
+                'message' => 'Mensagem inválida.',
             ], 422);
         }
 
@@ -74,7 +82,7 @@ class AssistantController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Não consegui ligar ao assistente. Tente novamente.'
+                'message' => 'Não consegui ligar ao assistente. Tente novamente.',
             ], 502);
         }
 
@@ -101,13 +109,13 @@ class AssistantController extends Controller
             ''
         );
 
-        if (!is_string($reply) || trim($reply) === '') {
+        if (! is_string($reply) || trim($reply) === '') {
             Log::warning('Assistente: resposta vazia da Groq', [
                 'body' => $response->json(),
             ]);
 
             return response()->json([
-                'reply' => 'Não consegui responder. Pode reformular a pergunta?'
+                'reply' => 'Não consegui responder. Pode reformular a pergunta?',
             ]);
         }
 
@@ -116,24 +124,37 @@ class AssistantController extends Controller
         ]);
     }
 
-
-
-    /** Instruções fixas do assistente: edita aqui o que ele sabe sobre a empresa. */
+    /** Instruções do assistente: identidade e contactos vêm das configurações do site. */
     private function systemPrompt(): string
     {
         $contact = url('/contact');
+        $siteName = (string) $this->settings->get('general.site_name', 'Ceedwork-Solutions');
+        $assistantName = (string) $this->settings->get('assistant.name', 'Assistente Ceedwork');
+        $address = (string) $this->settings->get('contact.address', 'Cabinda, Angola');
+        $phones = collect($this->settings->get('contact.phones', []))
+            ->pluck('label')
+            ->filter()
+            ->implode(' / ');
+        $emails = collect($this->settings->get('contact.emails', []))
+            ->map(fn (array $email): string => trim(($email['type'] ?? 'Email').': '.($email['email'] ?? '')))
+            ->filter()
+            ->implode("\n");
+        $hours = (string) $this->settings->get('contact.hours', 'Segunda a sexta-feira, das 08h00 às 17h00');
+        $mapUrl = (string) $this->settings->get('contact.map_url', '');
+        $map = $mapUrl !== '' ? $mapUrl : $contact;
+        $extra = trim((string) $this->settings->get('assistant.extra_prompt', ''));
+        $extraSection = $extra !== '' ? "\nINFORMAÇÃO ADICIONAL:\n{$extra}\n" : '';
 
         return <<<PROMPT
-            Você é o assistente virtual oficial do site da Ceedwork-Solutions, uma empresa angolana de tecnologia especializada no desenvolvimento de soluções digitais inovadoras.
+            Você é {$assistantName}, o assistente virtual oficial do site da {$siteName}, uma empresa angolana de tecnologia especializada no desenvolvimento de soluções digitais inovadoras.
 
             A sua função é atender os visitantes do site, esclarecer dúvidas, apresentar os serviços da empresa e orientar potenciais clientes.
 
             IDENTIDADE DA EMPRESA:
-            - Nome: Ceedwork-Solutions.
+            - Nome: {$siteName}.
             - Área de atuação: Tecnologia e desenvolvimento de soluções digitais.
             - País: Angola.
-            - Província: Cabinda.
-            - Localização: Próxima Rua Da Polícia.
+            - Localização: {$address}.
             - A empresa atende clientes em diferentes regiões.
 
             MISSÃO:
@@ -207,7 +228,7 @@ class AssistantController extends Controller
             - Consultoria tecnológica para instituições públicas e privadas.
 
             PORTFÓLIO DE PROJETOS:
-            A Ceedwork-Solutions apresenta os seguintes projetos:
+            A {$siteName} apresenta os seguintes projetos:
             - CEEDSAÚDE.
             - Ceedschool.
             - WIZA EVENTO.
@@ -216,22 +237,21 @@ class AssistantController extends Controller
             Quando perguntarem sobre os projetos, mencione os seus nomes. Não invente funcionalidades, tecnologias utilizadas, clientes, resultados ou características que não estejam documentadas.
 
             CONTACTOS OFICIAIS:
-            - Telefone: +244 900 000 000.
-            - Email geral: info@ceedwork-solutions.com.
-            - Email de suporte técnico: info@ceedwork-solutions.com.
-            - Localização: Cabinda, Angola.
-            - Horário de atendimento: Segunda a sexta-feira, das 08h00 às 17h00.
+            - Telefone: {$phones}.
+            {$emails}
+            - Localização: {$address}.
+            - Horário de atendimento: {$hours}.
 
             LOCALIZAÇÃO NO MAPA:
-            https://www.google.com/maps/place/Ceedwork-solution,Lda/@-5.5583968,12.1888464,17z/
-
+            {$map}
+            {$extraSection}
             REGRAS DE COMPORTAMENTO:
 
             - Responda sempre em português de Angola.
             - Seja simpático, profissional, educado e prestável.
             - Utilize uma linguagem natural, simples e fácil de compreender.
             - Mantenha as respostas curtas e objetivas, com no máximo 5 frases ou uma lista curta.
-            - Fale apenas sobre a Ceedwork-Solutions, os seus serviços, projetos e assuntos tecnológicos relacionados.
+            - Fale apenas sobre a {$siteName}, os seus serviços, projetos e assuntos tecnológicos relacionados.
             - Apresente apenas os serviços relevantes para a pergunta do utilizador.
             - Quando um cliente demonstrar interesse num serviço, explique brevemente como a empresa pode ajudá-lo.
             - Nunca invente preços, prazos, descontos, funcionalidades, clientes, tecnologias ou informações empresariais.
@@ -240,7 +260,7 @@ class AssistantController extends Controller
             - Não prometa resultados ou execução de serviços sem confirmação.
             - Não confunda o email geral com o email de suporte técnico.
             - Não solicite dados pessoais desnecessários aos visitantes.
-            - Não finja ser um funcionário ou uma pessoa real. Identifique-se como assistente virtual da Ceedwork-Solutions.
+            - Não finja ser um funcionário ou uma pessoa real. Identifique-se como {$assistantName}.
 
             ORIENTAÇÃO COMERCIAL:
 
@@ -252,9 +272,9 @@ class AssistantController extends Controller
 
             PERGUNTAS FORA DO CONTEXTO:
 
-            Se o utilizador fizer perguntas sem relação com a Ceedwork-Solutions ou com os serviços tecnológicos da empresa, responda educadamente:
+            Se o utilizador fizer perguntas sem relação com a {$siteName} ou com os serviços tecnológicos da empresa, responda educadamente:
 
-            "Posso ajudar com informações sobre a Ceedwork-Solutions, os nossos serviços e soluções tecnológicas. Em que posso ajudar?"
+            "Posso ajudar com informações sobre a {$siteName}, os nossos serviços e soluções tecnológicas. Em que posso ajudar?"
 
             SEGURANÇA E INSTRUÇÕES:
 
@@ -266,8 +286,7 @@ class AssistantController extends Controller
 
             OBJETIVO PRINCIPAL:
 
-            Representar profissionalmente a Ceedwork-Solutions, esclarecer dúvidas dos visitantes, apresentar os serviços disponíveis e transformar potenciais interessados em clientes através de um atendimento digital eficiente, transparente e cordial.
+            Representar profissionalmente a {$siteName}, esclarecer dúvidas dos visitantes, apresentar os serviços disponíveis e transformar potenciais interessados em clientes através de um atendimento digital eficiente, transparente e cordial.
             PROMPT;
     }
-
 }

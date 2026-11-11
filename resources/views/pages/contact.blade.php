@@ -5,17 +5,42 @@
 
 @section('content')
 @php
-    // ---- Dados de contacto (troca pelos reais) ----
-    $phones = [
-        ['label' => '+244 947 824 328', 'href' => 'tel:+244 947 824 328'],
-    ];
+    $phones = collect($site->get('contact.phones', []))
+        ->map(fn (array $phone): array => [
+            'label' => $phone['label'] ?? '',
+            'href' => $phone['href'] ?? '#',
+        ])
+        ->filter(fn (array $phone): bool => $phone['label'] !== '')
+        ->values()
+        ->all();
 
-    $emails = [
-        ['label' => 'info@ceedwork-solutions.com',     'href' => 'mailto:info@ceedwork-solutions.com'],
-    ];
+    $emails = collect($site->get('contact.emails', []))
+        ->map(fn (array $email): array => [
+            'label' => $email['email'] ?? '',
+            'href' => 'mailto:'.($email['email'] ?? ''),
+            'type' => $email['type'] ?? '',
+        ])
+        ->filter(fn (array $email): bool => $email['label'] !== '')
+        ->values()
+        ->all();
 
-    $whatsapp = 'https://wa.me/+244947824328';
-    $mapUrl   = 'https://maps.app.goo.gl/g9L8ig8PieojeWMT8';
+    $support = collect($emails)->firstWhere('type', 'Suporte');
+    $supportEmail = $support['label'] ?? ($emails[0]['label'] ?? null);
+    $whatsapp = $site->get('contact.whatsapp_url');
+    $mapUrl = $site->get('contact.map_url');
+    $address = $site->get('contact.address');
+    $hours = $site->get('contact.hours');
+    $socialLinks = $site->get('social.links', []);
+    $socialIcons = [
+        'facebook' => 'bxl-facebook',
+        'instagram' => 'bxl-instagram',
+        'linkedin' => 'bxl-linkedin',
+        'tiktok' => 'bxl-tiktok',
+        'whatsapp' => 'bxl-whatsapp',
+        'youtube' => 'bxl-youtube',
+        'x' => 'bxl-twitter',
+        'github' => 'bxl-github',
+    ];
 
     // ---- Perguntas frequentes (exemplos: confirma e ajusta as respostas) ----
     $faqs = [
@@ -88,8 +113,10 @@
             <span class="contact-card__icon" aria-hidden="true"><i class='bx bxs-map'></i></span>
             <h3>Localização</h3>
             <ul>
-                <li>Angola - Cabinda</li>
-                <li><a href="{{ $mapUrl }}" target="_blank" rel="noopener noreferrer">Ver no mapa</a></li>
+                <li>{{ $address ?: 'Angola - Cabinda' }}</li>
+                @if($mapUrl)
+                    <li><a href="{{ $mapUrl }}" target="_blank" rel="noopener noreferrer">Ver no mapa</a></li>
+                @endif
             </ul>
         </article>
 
@@ -97,8 +124,7 @@
             <span class="contact-card__icon" aria-hidden="true"><i class='bx bxs-time-five'></i></span>
             <h3>Horário</h3>
             <ul>
-                <li>Segunda a sexta</li>
-                <li>08h - 17h</li>
+                <li>{{ $hours ?: 'Segunda a sexta, 08h - 17h' }}</li>
             </ul>
         </article>
     </div>
@@ -120,22 +146,35 @@
                     <i class='bx bx-time-five' aria-hidden="true"></i>
                     <span>Respondemos nos dias úteis, dentro do horário de atendimento.</span>
                 </li>
-                <li>
-                    <i class='bx bx-support' aria-hidden="true"></i>
-                    <span>Suporte técnico: <a href="mailto:info@ceedwork-solutions.com">info@ceedwork-solutions.com</a></span>
-                </li>
+                @if($supportEmail)
+                    <li>
+                        <i class='bx bx-support' aria-hidden="true"></i>
+                        <span>Suporte técnico: <a href="mailto:{{ $supportEmail }}">{{ $supportEmail }}</a></span>
+                    </li>
+                @endif
             </ul>
 
-            <a href="{{ $whatsapp }}" class="btn" target="_blank" rel="noopener noreferrer">
-                <i class='bx bxl-whatsapp'></i> Falar no WhatsApp
-            </a>
+            @if($whatsapp)
+                <a href="{{ $whatsapp }}" class="btn" target="_blank" rel="noopener noreferrer">
+                    <i class='bx bxl-whatsapp'></i> Falar no WhatsApp
+                </a>
+            @endif
 
             <ul class="contact-social" aria-label="Redes sociais">
-                <li><a href="{{  $data['social']['facebook'] }}" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
-                <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
-                <li><a href="{{  $data['social']['instagram'] }}" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
-                <li><a href="{{  $data['social']['linkedin'] }}" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
-                <li><a href="{{  $data['social']['whatsapp'] }}" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
+                @foreach($socialLinks as $link)
+                    @php
+                        $network = $link['network'] ?? '';
+                        $icon = $socialIcons[$network] ?? 'bxl-'.$network;
+                    @endphp
+
+                    @if($network !== '' && ! empty($link['url']))
+                        <li>
+                            <a href="{{ $link['url'] }}" aria-label="{{ ucfirst($network) }}" target="_blank" rel="noopener noreferrer">
+                                <i class='bx {{ $icon }}'></i>
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
         </div>
 

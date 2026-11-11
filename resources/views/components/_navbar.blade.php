@@ -1,14 +1,37 @@
+@php
+    $siteName = (string) $site->get('general.site_name', 'Ceedwork');
+    $logo = $site->get('general.logo', $data['core']['logo'] ?? null);
+    $logoWhite = $site->get('general.logo_white', $data['core']['logo_white'] ?? $logo);
+    $phones = $site->get('contact.phones', []);
+    $emails = $site->get('contact.emails', []);
+    $address = $site->get('contact.address');
+    $socialLinks = $site->get('social.links', []);
+    $socialIcons = [
+        'facebook' => 'bxl-facebook',
+        'instagram' => 'bxl-instagram',
+        'linkedin' => 'bxl-linkedin',
+        'tiktok' => 'bxl-tiktok',
+        'whatsapp' => 'bxl-whatsapp',
+        'youtube' => 'bxl-youtube',
+        'x' => 'bxl-twitter',
+        'github' => 'bxl-github',
+    ];
+    $primaryPhone = $phones[0] ?? null;
+@endphp
+
 <header class="site-header">
 
     {{-- Barra superior --}}
     <div class="topbar">
         <div class="topbar__inner">
-            <a href="tel:+244 947 824 328" class="topbar__item">
-                <i class='bx bx-phone-call'></i> +244 947 824 328
-            </a>
+            @if($primaryPhone)
+                <a href="{{ $primaryPhone['href'] ?? '#' }}" class="topbar__item">
+                    <i class='bx bx-phone-call'></i> {{ $primaryPhone['label'] ?? '' }}
+                </a>
+            @endif
 
             <span class="topbar__item topbar__item--address">
-                <i class='bx bx-map'></i> Cabinda, Angola
+                <i class='bx bx-map'></i> {{ $address ?: 'Cabinda, Angola' }}
             </span>
 
             <a href="{{ route('contact') }}" class="topbar__pill">
@@ -28,7 +51,7 @@
 
         <div class="navbar__panel navbar__panel--brand">
             <a href="{{ route('home') }}" class="navbar__brand">
-                <img src="{{ asset($data['core']['logo']) }}" alt="Ceedwork">
+                <img src="{{ \App\Support\ImageUrl::for($logo) }}" alt="{{ $siteName }}">
             </a>
         </div>
 
@@ -37,7 +60,7 @@
 
             <div class="drawer__head">
                 <a href="{{ route('home') }}" class="drawer__brand">
-                    <img src="{{ asset($data['core']['logo_white']) }}" alt="Ceedwork">
+                    <img src="{{ \App\Support\ImageUrl::for($logoWhite) }}" alt="{{ $siteName }}">
                 </a>
                 <button type="button" class="drawer__close" id="navbarClose" aria-label="Fechar menu">
                     <i class='bx bx-x'></i>
@@ -59,21 +82,35 @@
                 <span class="drawer__label">Contactos</span>
 
                 <ul class="drawer__contacts">
-                    <li><a href="tel:{{  $data['social']['whatsapp'] }}"><i class='bx bx-phone-call'></i> {{  $data['social']['whatsapp'] }}</a></li>
-                    <li><a href="mailto:geral@ceedwork.co.ao"><i class='bx bx-envelope'></i> geral@ceedwork.co.ao</a>
-                    </li>
-                    <li><span><i class='bx bx-map'></i> Cabinda, Angola</span></li>
+                    @foreach($phones as $phone)
+                        <li><a href="{{ $phone['href'] ?? '#' }}"><i class='bx bx-phone-call'></i> {{ $phone['label'] ?? '' }}</a></li>
+                    @endforeach
+
+                    @foreach($emails as $email)
+                        <li><a href="mailto:{{ $email['email'] ?? '' }}"><i class='bx bx-envelope'></i> {{ $email['email'] ?? '' }}</a></li>
+                    @endforeach
+
+                    <li><span><i class='bx bx-map'></i> {{ $address ?: 'Cabinda, Angola' }}</span></li>
                     <li><a href="{{ route('contact') }}"><i class='bx bx-support'></i> Suporte</a></li>
                 </ul>
 
                 <span class="drawer__label">Redes sociais</span>
 
                 <ul class="drawer__social" aria-label="Redes sociais">
-                    <li><a href="{{  $data['social']['facebook'] }}" target="_blank" aria-label="Facebook"><i class='bx bxl-facebook'></i></a></li>
-                    <li><a href="{{  $data['social']['instagram'] }}" target="_blank" aria-label="Instagram"><i class='bx bxl-instagram'></i></a></li>
-                    <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
-                    <li><a href="{{  $data['social']['instagram'] }}" target="_blank" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a></li>
-                    <li><a href="{{  $data['social']['whatsapp'] }}" target="_blank" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a></li>
+                    @foreach($socialLinks as $link)
+                        @php
+                            $network = $link['network'] ?? '';
+                            $icon = $socialIcons[$network] ?? 'bxl-'.$network;
+                        @endphp
+
+                        @if($network !== '' && ! empty($link['url']))
+                            <li>
+                                <a href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ ucfirst($network) }}">
+                                    <i class='bx {{ $icon }}'></i>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

@@ -1,3 +1,24 @@
+@php
+    $siteName = (string) $site->get('general.site_name', 'Ceedwork');
+    $tagline = (string) $site->get('general.tagline', 'Soluções de tecnologia para o seu negócio crescer.');
+    $logoWhite = $site->get('general.logo_white', $data['core']['logo_white'] ?? $data['core']['logo'] ?? null);
+    $phones = $site->get('contact.phones', []);
+    $emails = $site->get('contact.emails', []);
+    $address = $site->get('contact.address');
+    $hours = $site->get('contact.hours');
+    $socialLinks = $site->get('social.links', []);
+    $socialIcons = [
+        'facebook' => 'bxl-facebook',
+        'instagram' => 'bxl-instagram',
+        'linkedin' => 'bxl-linkedin',
+        'tiktok' => 'bxl-tiktok',
+        'whatsapp' => 'bxl-whatsapp',
+        'youtube' => 'bxl-youtube',
+        'x' => 'bxl-twitter',
+        'github' => 'bxl-github',
+    ];
+@endphp
+
 <footer class="footer">
     <div class="footer__container">
 
@@ -6,11 +27,11 @@
             {{-- Coluna 1: marca + newsletter --}}
             <div class="footer__col footer__col--brand" data-reveal>
                 <a href="{{ route('home') }}" class="footer__logo">
-                    <img src="{{ asset($data['core']['logo_white']) }}" alt="Ceedwork">
+                    <img src="{{ \App\Support\ImageUrl::for($logoWhite) }}" alt="{{ $siteName }}">
                 </a>
 
-                <p>Soluções de tecnologia para o seu negócio crescer.</p>
-                <p>Cabinda, Angola</p>
+                <p>{{ $tagline }}</p>
+                <p>{{ $address ?: 'Cabinda, Angola' }}</p>
 
                 <h3 class="footer__title footer__title--sm">Subscreva a nossa Newsletter</h3>
 
@@ -46,28 +67,40 @@
                         <i class='bx bxs-map'></i>
                         <div>
                             <h3 class="footer__title">Endereço</h3>
-                            <p> Rua Da Polícia, Cabinda</p>
+                            <p>{{ $address ?: 'Cabinda, Angola' }}</p>
                         </div>
                     </li>
                     <li>
                         <i class='bx bxs-time-five'></i>
                         <div>
                             <h3 class="footer__title">Horário</h3>
-                            <p>Seg-Sex: 08h-17h</p>
+                            <p>{{ $hours ?: 'Seg-Sex: 08h-17h' }}</p>
                         </div>
                     </li>
                     <li>
                         <i class='bx bxs-phone'></i>
                         <div>
                             <h3 class="footer__title">Telefone</h3>
-                            <p><a href="tel:+244 947 824 328">+244 947 824 328</a></p>
+                            <p>
+                                @forelse($phones as $phone)
+                                    <a href="{{ $phone['href'] ?? '#' }}">{{ $phone['label'] ?? '' }}</a>@if(! $loop->last)<br>@endif
+                                @empty
+                                    <span>—</span>
+                                @endforelse
+                            </p>
                         </div>
                     </li>
                     <li>
                         <i class='bx bx-envelope'></i>
                         <div>
                             <h3 class="footer__title">Email</h3>
-                            <p><a href="mailto:info@ceedwork-solutions.com">info@ceedwork-solutions.com</a></p>
+                            <p>
+                                @forelse($emails as $email)
+                                    <a href="mailto:{{ $email['email'] ?? '' }}">{{ $email['email'] ?? '' }}</a>@if(! $loop->last)<br>@endif
+                                @empty
+                                    <span>—</span>
+                                @endforelse
+                            </p>
                         </div>
                     </li>
                 </ul>
@@ -76,15 +109,24 @@
 
         {{-- Redes sociais --}}
         <ul class="footer__social">
-            <li><a href="{{  $data['social']['facebook'] }}" aria-label="Facebook" target="_blank"><i class='bx bxl-facebook'></i></a></li>
-            <li><a href="{{  $data['social']['tiktok'] }}" aria-label="TikTok" target="_blank"><i class='bx bxl-tiktok'></i></a></li>
-            <li><a href="{{  $data['social']['instagram'] }}" aria-label="Instagram" target="_blank"><i class='bx bxl-instagram'></i></a></li>
-            <li><a href="{{  $data['social']['linkedin'] }}" aria-label="LinkedIn" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
-            <li><a href="{{  $data['social']['whatsapp'] }}" aria-label="WhatsApp" target="_blank"><i class='bx bxl-whatsapp'></i></a></li>
+            @foreach($socialLinks as $link)
+                @php
+                    $network = $link['network'] ?? '';
+                    $icon = $socialIcons[$network] ?? 'bxl-'.$network;
+                @endphp
+
+                @if($network !== '' && ! empty($link['url']))
+                    <li>
+                        <a href="{{ $link['url'] }}" aria-label="{{ ucfirst($network) }}" target="_blank" rel="noopener noreferrer">
+                            <i class='bx {{ $icon }}'></i>
+                        </a>
+                    </li>
+                @endif
+            @endforeach
         </ul>
 
         <p class="footer__copy">
-            <strong>Ceedwork</strong>, todos os direitos reservados &copy; {{ date('Y') }}.
+            <strong>{{ $siteName }}</strong>, todos os direitos reservados &copy; {{ date('Y') }}.
         </p>
     </div>
 
@@ -92,7 +134,9 @@
         <i class='bx bx-chevron-up'></i>
     </a>
 
-    @include('components._assistant')
+    @if($site->get('assistant.enabled', true))
+        @include('components._assistant')
+    @endif
 
 </footer>
 

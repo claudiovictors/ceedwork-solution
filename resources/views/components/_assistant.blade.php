@@ -1,5 +1,14 @@
 {{-- resources/views/components/_assistant.blade.php --}}
 {{-- Assistente virtual: botão flutuante + janela de chat. Inclui no footer ou no layout. --}}
+@php
+    $assistantName = (string) $site->get('assistant.name', 'Assistente Ceedwork');
+    $assistantGreeting = (string) $site->get('assistant.greeting', 'Olá! Sou o assistente virtual da Ceedwork. Como posso ajudar?');
+    $assistantSuggestions = collect($site->get('assistant.suggestions', []))
+        ->pluck('text')
+        ->filter()
+        ->values();
+@endphp
+
 <div class="assistant" id="assistant"
      data-endpoint="{{ route('assistant.chat') }}"
      data-token="{{ csrf_token() }}">
@@ -9,12 +18,12 @@
         <i class='bx bx-message-square-dots' aria-hidden="true"></i>
     </button>
 
-    <section class="assistant__panel" id="assistantPanel" role="dialog" aria-label="Assistente virtual da Ceedwork">
+    <section class="assistant__panel" id="assistantPanel" role="dialog" aria-label="{{ $assistantName }}">
 
         <header class="assistant__head">
             <span class="assistant__avatar" aria-hidden="true"><i class='bx bx-bot'></i></span>
             <div class="assistant__title">
-                <strong>Assistente Ceedwork</strong>
+                <strong>{{ $assistantName }}</strong>
                 <small><span class="assistant__dot" aria-hidden="true"></span> Online</small>
             </div>
             <button type="button" class="assistant__close" id="assistantClose" aria-label="Fechar assistente">
@@ -25,9 +34,9 @@
         <div class="assistant__messages" id="assistantMessages" role="log" aria-live="polite"></div>
 
         <div class="assistant__chips" id="assistantChips">
-            <button type="button">Que serviços oferecem?</button>
-            <button type="button">Como peço um orçamento?</button>
-            <button type="button">Onde ficam localizados?</button>
+            @foreach($assistantSuggestions as $suggestion)
+                <button type="button">{{ $suggestion }}</button>
+            @endforeach
         </div>
 
         <form class="assistant__form" id="assistantForm" autocomplete="off">
@@ -54,7 +63,7 @@
         const endpoint = root.dataset.endpoint;
         const token    = root.dataset.token;
         const STORAGE  = 'ceedwork-assistant';
-        const GREETING = 'Olá! Sou o assistente virtual da Ceedwork. Como posso ajudar?';
+        const GREETING = @js($assistantGreeting);
 
         let history = [];   // [{ role: 'user' | 'model', text }]
         let busy = false;
@@ -207,6 +216,6 @@
         try { history = JSON.parse(sessionStorage.getItem(STORAGE)) || []; } catch (e) { history = []; }
 
         history.forEach((m) => addMessage(m.role, m.text));
-        chips.hidden = history.length > 0;
+        chips.hidden = history.length > 0 || chips.children.length === 0;
     })();
 </script>
