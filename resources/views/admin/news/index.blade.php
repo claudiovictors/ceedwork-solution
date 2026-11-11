@@ -167,7 +167,9 @@
                                     </form>
 
                                     <form method="POST" action="{{ route('admin.news.destroy', $post) }}"
-                                          onsubmit="return confirm('Eliminar esta notícia? Esta ação não pode ser revertida no painel.');">
+                                          data-confirm="Eliminar esta notícia? Esta ação não pode ser revertida no painel."
+                                          data-confirm-title="Eliminar notícia"
+                                          data-confirm-button="Eliminar">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

@@ -77,6 +77,44 @@ class SettingsManagementTest extends TestCase
         $this->assertSame('Ceedwork Teste', app(SiteSettings::class)->get('general.site_name'));
     }
 
+    public function test_admin_users_can_update_contact_repeaters(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->put(route('admin.settings.update', 'contact'), [
+                'phones' => [
+                    ['label' => '+244 111 222 333', 'href' => 'tel:+244111222333'],
+                ],
+                'emails' => [
+                    ['type' => 'Geral', 'email' => 'geral@teste.ao'],
+                    ['type' => 'Suporte', 'email' => 'suporte@teste.ao'],
+                ],
+                'address' => 'Rua de Teste, Cabinda',
+                'hours' => 'Segunda a sábado, 09h - 18h',
+                'whatsapp_number' => '+244 111 222 333',
+                'whatsapp_url' => 'https://wa.me/244111222333',
+                'map_url' => 'https://maps.example.com/teste',
+                'map_embed_url' => 'https://maps.example.com/embed',
+            ])
+            ->assertSessionHasNoErrors();
+
+        $settings = app(SiteSettings::class);
+
+        $this->assertSame('+244 111 222 333', $settings->get('contact.phones.0.label'));
+        $this->assertCount(2, $settings->get('contact.emails'));
+    }
+
+    public function test_contact_repeater_form_uses_valid_alpine_data(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->get(route('admin.settings.edit', ['group' => 'contact']))
+            ->assertOk()
+            ->assertSee('x-data="{ items: JSON.parse(', false);
+    }
+
     public function test_invalid_colors_are_rejected(): void
     {
         $admin = User::factory()->admin()->create();

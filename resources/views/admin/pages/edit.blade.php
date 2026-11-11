@@ -68,7 +68,9 @@
         <form id="restore-{{ $page }}-{{ $sectionKey }}"
               method="POST"
               action="{{ route('admin.pages.restore', [$page, $sectionKey]) }}"
-              onsubmit="return confirm('Repor esta secção para o conteúdo original? As alterações guardadas serão eliminadas.');">
+              data-confirm="Repor esta secção para o conteúdo original? As alterações guardadas serão eliminadas."
+              data-confirm-title="Repor secção"
+              data-confirm-button="Repor">
             @csrf
             @method('DELETE')
         </form>

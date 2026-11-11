@@ -125,7 +125,9 @@
                                     </form>
 
                                     <form method="POST" action="{{ route('admin.services.destroy', $service) }}"
-                                          onsubmit="return confirm('Eliminar este serviço e todos os seus itens?');">
+                                          data-confirm="Eliminar este serviço e todos os seus itens?"
+                                          data-confirm-title="Eliminar serviço"
+                                          data-confirm-button="Eliminar">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

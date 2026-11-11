@@ -163,7 +163,9 @@
                                     </form>
 
                                     <form method="POST" action="{{ route('admin.portfolio.destroy', $project) }}"
-                                          onsubmit="return confirm('Eliminar este projeto?');">
+                                          data-confirm="Eliminar este projeto?"
+                                          data-confirm-title="Eliminar projeto"
+                                          data-confirm-button="Eliminar">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

@@ -48,6 +48,22 @@ final class SiteSettings
             return $all[$key];
         }
 
+        $segments = explode('.', $key);
+
+        for ($length = count($segments) - 1; $length >= 1; $length--) {
+            $prefix = implode('.', array_slice($segments, 0, $length));
+
+            if (! array_key_exists($prefix, $all)) {
+                continue;
+            }
+
+            $nested = data_get($all[$prefix], implode('.', array_slice($segments, $length)));
+
+            if ($nested !== null) {
+                return $nested;
+            }
+        }
+
         if (Arr::has(config('site', []), $key)) {
             return data_get(config('site'), $key);
         }

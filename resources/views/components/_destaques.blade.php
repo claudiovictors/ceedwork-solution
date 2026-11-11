@@ -1,4 +1,6 @@
 @php
+    $highlights = $pageContent->get('home', 'highlights', null, []);
+
     // Aceita URL externa ou ficheiro local em public/assets/images
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
 
@@ -16,8 +18,8 @@
     <div class="container">
 
         <header class="highlights__head" data-reveal>
-            <span class="eyebrow">Nossos Serviços</span>
-            <h2 class="highlights__title">Destaques</h2>
+            <span class="eyebrow">{{ $highlights['eyebrow'] ?? 'Nossos Serviços' }}</span>
+            <h2 class="highlights__title">{{ $highlights['title'] ?? 'Destaques' }}</h2>
         </header>
 
         <div class="highlights__slider" data-reveal style="--reveal-delay:150ms">

@@ -10,7 +10,8 @@
     $blankItem = [];
 
     foreach ($subFields as $subKey => $subField) {
-        $blankItem[$subKey] = $subField['default'] ?? '';
+        $blankItem[$subKey] = $subField['default']
+            ?? (($subField['type'] ?? null) === 'select' ? array_key_first($subField['options'] ?? []) : '');
     }
 
     $repeaterErrors = collect($errors->getBag('default')->keys())
@@ -18,7 +19,7 @@
         ->map(fn (string $key): string => $errors->first($key));
 @endphp
 
-<div x-data='{ items: @js($items) }' class="space-y-3">
+<div x-data="{ items: @js($items) }" class="space-y-3">
     <template x-for="(item, index) in items" :key="index">
         <div class="rounded-xl border border-[#e6edf7] bg-[#f8fafd] p-4">
             <div class="flex items-center justify-between gap-3">
@@ -81,7 +82,7 @@
 
     <button
         type="button"
-        @click='items.push(@js($blankItem))'
+        @click="items.push(@js($blankItem))"
         class="inline-flex items-center gap-2 rounded-lg border border-[#cfe0f4] bg-white px-3 py-2 text-sm font-semibold text-[#13397c] transition hover:bg-[#eef4fb]"
     >
         <i class="bx bx-plus text-base"></i>

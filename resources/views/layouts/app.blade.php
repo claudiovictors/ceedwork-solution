@@ -103,6 +103,8 @@
 
 </div>
 
+<x-admin-confirm />
+
 </body>
 
 </html>

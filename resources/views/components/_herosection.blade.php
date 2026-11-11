@@ -1,21 +1,31 @@
-<section class="hero" style="--hero-bg: url('{{ asset($data[ 'banners' ][ 'herosection' ]) }}')">
+@php
+    $hero = $pageContent->get('home', 'hero', null, []);
+    $heroBackground = \App\Support\ImageUrl::for($hero['background_image'] ?? null, asset('assets/images/banners/herosection.png'));
+    $heroFeatured = \App\Support\ImageUrl::for($hero['featured_image'] ?? null, asset('assets/images/banners/herosection.png'));
+    $heroFeaturedAlt = $hero['featured_image_alt'] ?? 'Equipa da Ceedwork a trabalhar';
+    $showFeatured = filter_var($hero['show_featured'] ?? true, FILTER_VALIDATE_BOOLEAN);
+@endphp
+
+<section class="hero" style="--hero-bg: url('{{ $heroBackground }}')">
     <div class="hero__container">
 
-        <div class="hero__media">
-            <img src="{{ asset($data [ 'banners' ][ 'herosection' ]) }}" alt="Equipa da Ceedwork a trabalhar" loading="eager" fetchpriority="high">
-        </div>
+        @if($showFeatured)
+            <div class="hero__media">
+                <img src="{{ $heroFeatured }}" alt="{{ $heroFeaturedAlt }}" loading="eager" fetchpriority="high">
+            </div>
+        @endif
 
         <div class="hero__content">
-            <h1 class="hero__title">Soluções de tecnologia que impulsionam o seu negócio.</h1>
+            <h1 class="hero__title">{{ $hero['title'] ?? 'Soluções de tecnologia que impulsionam o seu negócio.' }}</h1>
 
-            <p class="hero__text">Desenvolvimento de software, infraestrutura e consultoria para empresas que querem crescer com segurança e inovação.</p>
+            <p class="hero__text">{{ $hero['text'] ?? 'Desenvolvimento de software, infraestrutura e consultoria para empresas que querem crescer com segurança e inovação.' }}</p>
 
             <div class="hero__actions">
-                <a href="{{ route('about') }}" class="btn">
-                    Saber mais <i class='bx bx-right-arrow-alt'></i>
+                <a href="{{ url($hero['primary_link'] ?? '/about-us') }}" class="btn">
+                    {{ $hero['primary_label'] ?? 'Saber mais' }} <i class='bx bx-right-arrow-alt'></i>
                 </a>
-                <a href="{{ route('contact') }}" class="btn btn--ghost-light">
-                    Fale connosco
+                <a href="{{ url($hero['secondary_link'] ?? '/contact') }}" class="btn btn--ghost-light">
+                    {{ $hero['secondary_label'] ?? 'Fale connosco' }}
                 </a>
             </div>
         </div>

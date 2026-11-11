@@ -180,6 +180,62 @@ class PageContentManagementTest extends TestCase
             ->assertSessionHasErrors('hero_background_image');
     }
 
+    public function test_home_hero_content_is_rendered_on_the_public_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $payload = $this->pagePayload('home');
+        $payload['hero_title'] = 'Título público de teste';
+        $payload['hero_text'] = 'Texto público de teste.';
+        $payload['hero_primary_label'] = 'Ir para contactos';
+        $payload['hero_secondary_label'] = 'Ver sobre nós';
+        $payload['hero_background_image_url'] = 'https://example.com/fundo.jpg';
+        $payload['hero_featured_image_url'] = 'https://example.com/destaque-publico.jpg';
+        $payload['hero_featured_image_alt'] = 'Imagem pública de teste';
+
+        $this->actingAs($admin)
+            ->put(route('admin.pages.update', 'home'), $payload)
+            ->assertSessionHasNoErrors();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Título público de teste')
+            ->assertSee('Texto público de teste.')
+            ->assertSee('Ir para contactos')
+            ->assertSee('Ver sobre nós')
+            ->assertSee('https://example.com/fundo.jpg')
+            ->assertSee('https://example.com/destaque-publico.jpg')
+            ->assertSee('Imagem pública de teste');
+    }
+
+    public function test_home_hero_featured_image_can_be_hidden(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $payload = $this->pagePayload('home');
+        $payload['hero_show_featured'] = '0';
+
+        $this->actingAs($admin)
+            ->put(route('admin.pages.update', 'home'), $payload)
+            ->assertSessionHasNoErrors();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('class="hero__media"', false);
+    }
+
+    public function test_admin_pages_use_the_custom_confirmation_modal(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->get(route('admin.pages.edit', 'home'))
+            ->assertOk()
+            ->assertSee('id="adminConfirm"', false)
+            ->assertSee('data-confirm=', false)
+            ->assertDontSee('return confirm(', false);
+    }
+
     /**
      * @return array<string, mixed>
      */
