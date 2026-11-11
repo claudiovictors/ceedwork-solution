@@ -105,13 +105,22 @@ class PageContentDisplayTest extends TestCase
 
     public function test_services_page_renders_editable_header(): void
     {
-        app(PageContent::class)->save('services', 'header', [
+        $content = app(PageContent::class);
+
+        $content->save('services', 'header', [
             'title' => 'Serviços de teste',
             'intro_eyebrow' => 'Rótulo de serviços',
             'intro_title' => 'Título de serviços de teste',
             'intro' => 'Introdução de serviços de teste.',
             'image' => 'https://example.com/servicos.jpg',
             'image_alt' => 'Banner de serviços',
+        ]);
+        $content->save('services', 'cta', [
+            'eyebrow' => 'CTA de serviços',
+            'title' => 'Título do CTA de teste',
+            'text' => 'Texto do CTA de teste.',
+            'button_label' => 'Botão do CTA',
+            'button_link' => '/contact',
         ]);
 
         $this->get(route('services'))
@@ -120,7 +129,11 @@ class PageContentDisplayTest extends TestCase
             ->assertSee('Rótulo de serviços')
             ->assertSee('Título de serviços de teste')
             ->assertSee('Introdução de serviços de teste.')
-            ->assertSee('https://example.com/servicos.jpg');
+            ->assertSee('https://example.com/servicos.jpg')
+            ->assertSee('CTA de serviços')
+            ->assertSee('Título do CTA de teste')
+            ->assertSee('Texto do CTA de teste.')
+            ->assertSee('Botão do CTA');
     }
 
     public function test_portfolio_page_renders_published_projects(): void
@@ -180,6 +193,38 @@ class PageContentDisplayTest extends TestCase
             ->assertSee('Parceiros de teste')
             ->assertSee('Parceiro de teste')
             ->assertSee('https://example.com/parceiro.png');
+    }
+
+    public function test_home_services_are_editable(): void
+    {
+        app(PageContent::class)->save('home', 'services', [
+            'items' => [
+                [
+                    'eyebrow' => 'Rótulo de serviço de teste',
+                    'title' => 'Serviço home de teste',
+                    'text' => 'Texto do serviço home com <strong>destaque</strong>.',
+                    'link' => '/services',
+                    'images' => "https://example.com/servico-a.jpg\nhttps://example.com/servico-b.jpg",
+                ],
+            ],
+        ]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Rótulo de serviço de teste')
+            ->assertSee('Serviço home de teste')
+            ->assertSee('Texto do serviço home com', false)
+            ->assertSee('<strong>destaque</strong>', false)
+            ->assertSee('https://example.com/servico-a.jpg')
+            ->assertSee('https://example.com/servico-b.jpg');
+    }
+
+    public function test_home_services_use_default_content_when_not_customized(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Software à medida')
+            ->assertSee('Equipamentos prontos para servir');
     }
 
     public function test_news_header_and_footer_text_are_editable(): void
