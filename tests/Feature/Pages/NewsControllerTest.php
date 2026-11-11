@@ -37,4 +37,26 @@ class NewsControllerTest extends TestCase
             ->assertSee('Nenhuma notícia encontrada')
             ->assertDontSee('news-featured__inner');
     }
+
+    public function test_published_post_page_renders_model_content(): void
+    {
+        $category = Category::factory()->create(['name' => 'Empresa']);
+        $post = Post::factory()->published()->create([
+            'category_id' => $category->id,
+            'title' => 'Notícia em detalhe',
+            'slug' => 'noticia-em-detalhe',
+            'excerpt' => 'Resumo da notícia em detalhe.',
+            'body' => '<p>Corpo completo da notícia.</p>',
+            'cover_image' => 'https://example.com/detalhe.jpg',
+        ]);
+
+        $this->get(route('news.show', $post))
+            ->assertOk()
+            ->assertSee('Notícia em detalhe')
+            ->assertSee('Resumo da notícia em detalhe.')
+            ->assertSee('Corpo completo da notícia.', false)
+            ->assertSee('Empresa')
+            ->assertSee($post->author->name)
+            ->assertSee('https://example.com/detalhe.jpg');
+    }
 }

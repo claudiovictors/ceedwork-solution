@@ -4,10 +4,6 @@
 @section('title', 'Notícias | Ceedwork')
 @section('description', 'Acompanhe as novidades da Ceedwork-Solutions: projetos, eventos, parcerias e dicas de tecnologia.')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/news.css') }}">
-@endpush
-
 @php
     $header = $pageContent->get('news', 'header', null, []);
 @endphp
@@ -25,83 +21,14 @@
 
 @section('content')
 @php
-    // Accepts an external URL or a local file inside public/assets/images
+    // Aceita uma URL externa ou um ficheiro local em public/assets/images
     $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
-    $img = fn ($id) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&w=900&q=75";
 
-    // Example data. Later, pass $posts from a controller using the same keys.
-    // The first post is the featured one.
-    $posts = $posts ?? [
-        [
-            'title'    => 'Ceedwork lança nova plataforma de gestão',
-            'excerpt'  => 'A Ceedwork apresentou a sua nova solução pensada para as necessidades das empresas angolanas, com foco em simplicidade e segurança.',
-            'image'    => $img('1522071820081-009f0129c71c'),
-            'date'     => '2026-07-01',
-            'category' => 'Empresa',
-        ],
-        [
-            'title'    => 'Presença marcante na feira de tecnologia',
-            'excerpt'  => 'A equipa participou na edição deste ano, partilhando casos de sucesso e novas tendências em transformação digital.',
-            'image'    => $img('1540575467063-178a50c2df87'),
-            'date'     => '2026-06-15',
-            'category' => 'Eventos',
-        ],
-        [
-            'title'    => 'Nova parceria reforça infraestrutura',
-            'excerpt'  => 'Um novo acordo estratégico vai ampliar a capacidade de resposta e o suporte aos clientes em todo o país.',
-            'image'    => $img('1521737604893-d14cc237f11d'),
-            'date'     => '2026-05-05',
-            'category' => 'Empresa',
-        ],
-        [
-            'title'    => 'Workshop de segurança digital',
-            'excerpt'  => 'Realizámos um workshop prático sobre boas práticas de cibersegurança para pequenas e médias empresas.',
-            'image'    => $img('1563986768609-322da13575f3'),
-            'date'     => '2026-04-20',
-            'category' => 'Eventos',
-        ],
-        [
-            'title'    => 'Equipa cresce com novos talentos',
-            'excerpt'  => 'Damos as boas-vindas a novos profissionais que vão reforçar as áreas de desenvolvimento e suporte técnico.',
-            'image'    => $img('1542744173-8e7e53415bb0'),
-            'date'     => '2026-03-10',
-            'category' => 'Empresa',
-        ],
-        [
-            'title'    => 'Cinco sinais de que o seu negócio precisa de um sistema à medida',
-            'excerpt'  => 'Processos manuais, folhas de cálculo por todo o lado e falta de visão do negócio são alguns dos sinais de que está na hora de evoluir.',
-            'image'    => $img('1498050108023-c5249f4df085'),
-            'date'     => '2026-02-18',
-            'category' => 'Dicas',
-        ],
-        [
-            'title'    => 'Site institucional: por onde começar',
-            'excerpt'  => 'Antes de pensar no design, defina o objetivo do site, o público e os conteúdos essenciais. Veja os primeiros passos.',
-            'image'    => $img('1547658719-da2b51169166'),
-            'date'     => '2026-01-27',
-            'category' => 'Dicas',
-        ],
-        [
-            'title'    => 'Aplicativo nativo ou híbrido? Como escolher',
-            'excerpt'  => 'Entenda as diferenças entre as duas abordagens e o que deve pesar na decisão: orçamento, prazo e experiência do utilizador.',
-            'image'    => $img('1512941937669-90a1b58e7e9c'),
-            'date'     => '2025-12-12',
-            'category' => 'Tecnologia',
-        ],
-        [
-            'title'    => 'Porque a segurança dos dados importa para as empresas',
-            'excerpt'  => 'Backups, acessos controlados e boas práticas simples ajudam a proteger a informação do seu negócio.',
-            'image'    => $img('1558494949-ef010cbdcc31'),
-            'date'     => '2025-11-04',
-            'category' => 'Tecnologia',
-        ],
-    ];
-
-    $posts = collect($posts)->values();
+    $posts = collect($posts ?? [])->values();
     $featured = $posts->first();
     $categories = $categories ?? $posts->pluck('category')->filter()->unique()->values();
 
-    $postUrl = fn ($p) => url('/noticias/' . ($p['slug'] ?? Illuminate\Support\Str::slug($p['title'])));
+    $postUrl = fn ($p) => route('news.show', $p['slug']);
     $date    = fn ($p) => \Carbon\Carbon::parse($p['date'])->locale('pt');
     $fDate   = $featured ? $date($featured) : null;
 @endphp
@@ -199,7 +126,7 @@
         <div class="news-empty" id="newsEmpty" hidden>
             <i class='bx bx-search-alt' aria-hidden="true"></i>
             <h3>Nenhuma notícia encontrada</h3>
-            <p>Tente outra palavra ou escolha outra categoria.</p>
+            <p>Ainda não há notícias publicadas ou os filtros não correspondem.</p>
             <button type="button" class="btn btn--outline" id="newsReset">Limpar filtros</button>
         </div>
 

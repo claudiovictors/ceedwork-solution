@@ -5,26 +5,43 @@ services:
       dockerfile: Dockerfile
     image: ceedwork:latest
     restart: unless-stopped
+    stop_grace_period: 30s
     env_file:
       - .env
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${APP_KEY:?Set APP_KEY in .env}
-      APP_URL: ${APP_URL:?Set APP_URL in .env}
+      APP_KEY: ${APP_KEY:?Defina APP_KEY no .env}
+      APP_URL: ${APP_URL:?Defina APP_URL no .env}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Africa/Luanda}
+      TZ: ${APP_TIMEZONE:-Africa/Luanda}
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: "3306"
       DB_DATABASE: ${DB_DATABASE:-ceedwork}
       DB_USERNAME: ${DB_USERNAME:-ceedwork}
-      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      DB_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no .env}
+      LOG_LEVEL: ${LOG_LEVEL:-warning}
     ports:
-      - "${APP_PORT:-8080}:80"
+      - "${APP_BIND:-0.0.0.0}:${APP_PORT:-8080}:80"
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "php -r 'exit(@fsockopen(\"127.0.0.1\", 80) ? 0 : 1);'"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
     volumes:
       - app_storage:/var/www/html/storage
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app
 
@@ -34,8 +51,9 @@ services:
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-ceedwork}
       MYSQL_USER: ${DB_USERNAME:-ceedwork}
-      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Defina DB_ROOT_PASSWORD no .env}
+      TZ: ${APP_TIMEZONE:-Africa/Luanda}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -46,6 +64,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app
 

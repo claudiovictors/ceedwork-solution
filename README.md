@@ -1,58 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ceedwork Solution
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Website institucional e painel de administração da Ceedwork Solution, construído com Laravel.
 
-## About Laravel
+## Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Docker Engine 24+
+- Docker Compose v2+
+- Um domínio apontado para o servidor (recomendado)
+- Proxy reverso com HTTPS (Nginx, Caddy ou Traefik) em produção
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Deploy numa VPS
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. Clone o repositório e entre na pasta:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/claudiovictors/ceedwork-solution.git
+cd ceedwork-solution
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. Crie o ficheiro de ambiente:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Gere uma chave de aplicação:
 
-## Code of Conduct
+```bash
+openssl rand -base64 32
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Copie o resultado para `APP_KEY`, com o prefixo `base64:`. Exemplo:
 
-## Security Vulnerabilities
+```env
+APP_KEY=base64:resultado-do-comando
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Configure pelo menos estas variáveis no `.env`:
 
-## License
+```env
+APP_URL=https://seudominio.com
+APP_TIMEZONE=Africa/Luanda
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+DB_DATABASE=ceedwork
+DB_USERNAME=ceedwork
+DB_PASSWORD=uma-password-forte
+DB_ROOT_PASSWORD=outra-password-forte
+
+ADMIN_NAME="Administrador Ceedwork"
+ADMIN_EMAIL=admin@seudominio.com
+ADMIN_PASSWORD=uma-password-forte
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=info@seudominio.com
+MAIL_PASSWORD=password-de-aplicacao
+MAIL_FROM_ADDRESS=info@seudominio.com
+```
+
+5. Valide a configuração do Compose:
+
+```bash
+docker compose config --quiet
+```
+
+6. Construa e arranque os contentores:
+
+```bash
+docker compose up -d --build
+```
+
+No primeiro arranque, o container da aplicação:
+
+- cria as pastas de storage e o link `public/storage`;
+- executa as migrações;
+- cria o administrador se `ADMIN_EMAIL` e `ADMIN_PASSWORD` estiverem definidos;
+- otimiza configuração, rotas e views.
+
+7. Verifique o estado:
+
+```bash
+docker compose ps
+docker compose logs -f app
+```
+
+A aplicação fica disponível em `http://IP-DA-VPS:8080` por padrão. Para expor apenas via proxy reverso, defina `APP_BIND=127.0.0.1` e configure o proxy para `http://127.0.0.1:8080`.
+
+## Proxy reverso
+
+Configure o Nginx/Caddy/Traefik para encaminhar o domínio para `127.0.0.1:8080` e terminar o HTTPS. O `APP_URL` deve usar `https://` e `SESSION_SECURE_COOKIE` deve ficar `true`. Para testes por HTTP antes de configurar o proxy, use `SESSION_SECURE_COOKIE=false` temporariamente.
+
+## Administração
+
+O painel fica em `/ceed-admin`. Use o email e a password definidos em `ADMIN_EMAIL` e `ADMIN_PASSWORD`.
+
+Não existem serviços, notícias ou projetos de demonstração no arranque. O conteúdo é criado no painel de administração.
+
+## Dados persistentes
+
+Os volumes `app_storage` e `mysql_data` guardam uploads e a base de dados. Faça backups regulares:
+
+```bash
+docker compose exec db mysqldump -uroot -p"$DB_ROOT_PASSWORD" "$DB_DATABASE" > backup.sql
+docker run --rm -v ceedwork_app_storage:/data -v "$PWD":/backup alpine tar czf /backup/storage.tar.gz -C /data .
+```
+
+## Atualizar
+
+```bash
+git pull origin main
+docker compose up -d --build
+```
+
+As migrações são executadas automaticamente no arranque.
+
+## Desenvolvimento local
+
+Para desenvolvimento sem Docker, configure o `.env` com a base de dados local, instale as dependências e execute:
+
+```bash
+composer install
+npm install
+npm run build
+php artisan migrate
+php artisan serve
+```
+
+Testes:
+
+```bash
+php artisan test --compact
+```

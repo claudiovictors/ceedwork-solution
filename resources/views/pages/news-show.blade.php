@@ -1,8 +1,8 @@
 {{-- resources/views/news-show.blade.php --}}
 @extends('layouts.main')
 
-@section('title', $post['title'] . ' | Ceedwork')
-@section('description', $post['excerpt'])
+@section('title', $post->title . ' | Ceedwork')
+@section('description', $post->excerpt)
 
 @section('herosection')
     @include('components._page-header', [
@@ -10,27 +10,28 @@
         'crumbs' => [
             ['label' => 'Início', 'url' => '/'],
             ['label' => 'Notícias', 'url' => '/news'],
-            ['label' => Illuminate\Support\Str::limit($post['title'], 40)],
+            ['label' => Illuminate\Support\Str::limit($post->title, 40)],
         ],
     ])
 @endsection
 
 @section('content')
 @php
-    // Accepts an external URL or a local file inside public/assets/images
-    $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
+    $postUrl = fn (\App\Models\Post $p) => route('news.show', $p);
 
-    $postUrl = fn ($p) => url('/news/' . $p['slug']);
-    $date    = fn ($p) => \Carbon\Carbon::parse($p['date'])->locale('pt');
-    $d       = $date($post);
+    $publishedAt = $post->published_at ?? $post->created_at;
+    $categoryName = $post->category?->name ?? 'Sem categoria';
+    $authorName = $post->author?->name ?? 'Ceedwork';
+    $coverImage = $post->cover_url;
+    $body = $post->body ?? '';
 
     // minutos de leitura (~200 palavras por minuto)
-    $words   = preg_match_all('/\pL+/u', strip_tags($post['body']));
+    $words   = preg_match_all('/\pL+/u', strip_tags($body));
     $minutes = max(1, (int) ceil($words / 200));
 
     // links de partilha
     $enc  = rawurlencode(url()->current());
-    $text = rawurlencode($post['title']);
+    $text = rawurlencode($post->title);
 @endphp
 
 {{-- barra de progresso de leitura --}}
@@ -43,18 +44,18 @@
             <i class='bx bx-arrow-back' aria-hidden="true"></i> Voltar às notícias
         </a>
 
-        <span class="news-tag">{{ $post['category'] }}</span>
-        <h1 class="article__title">{{ $post['title'] }}</h1>
+        <span class="news-tag">{{ $categoryName }}</span>
+        <h1 class="article__title">{{ $post->title }}</h1>
 
         <ul class="article__meta">
-            <li><i class='bx bx-calendar' aria-hidden="true"></i> <time datetime="{{ $d->toDateString() }}">{{ $d->translatedFormat('d \d\e F \d\e Y') }}</time></li>
+            <li><i class='bx bx-calendar' aria-hidden="true"></i> <time datetime="{{ $publishedAt->toDateString() }}">{{ $publishedAt->locale('pt')->translatedFormat('d \d\e F \d\e Y') }}</time></li>
             <li><i class='bx bx-time-five' aria-hidden="true"></i> {{ $minutes }} min de leitura</li>
-            <li><i class='bx bx-user' aria-hidden="true"></i> {{ $post['author']['name'] }}</li>
+            <li><i class='bx bx-user' aria-hidden="true"></i> {{ $authorName }}</li>
         </ul>
     </header>
 
     <figure class="container article__cover" data-reveal="zoom">
-        <img src="{{ $src($post['image']) }}" alt="{{ $post['title'] }}" loading="eager" fetchpriority="high">
+        <img src="{{ $coverImage }}" alt="{{ $post->title }}" loading="eager" fetchpriority="high">
     </figure>
 
     <div class="container article__layout">
@@ -94,22 +95,14 @@
         <div class="article__main">
             {{-- Conteúdo em HTML (só de fontes de confiança, ex: o teu painel de admin) --}}
             <div class="article__body prose">
-                {!! $post['body'] !!}
+                {!! $body !!}
             </div>
-
-            @if(!empty($post['tags']))
-                <ul class="article__tags" aria-label="Etiquetas">
-                    @foreach($post['tags'] as $tag)
-                        <li>#{{ $tag }}</li>
-                    @endforeach
-                </ul>
-            @endif
 
             {{-- Autor --}}
             <div class="author">
                 <span class="author__avatar" aria-hidden="true">CW</span>
                 <div>
-                    <h3>{{ $post['author']['name'] }}</h3>
+                    <h3>{{ $authorName }}</h3>
                     <p>Empresa angolana de tecnologia, sediada em Cabinda, especializada no desenvolvimento de soluções digitais inovadoras.</p>
                     <a href="{{ url('/about-us') }}" class="author__link">
                         Conhecer a Ceedwork <i class='bx bx-right-arrow-alt'></i>
@@ -131,26 +124,26 @@
 
             <ul class="news-grid">
                 @foreach($related as $item)
-                    @php $rd = $date($item); @endphp
+                    @php $rd = $item->published_at ?? $item->created_at; @endphp
 
                     <li class="news-item" data-reveal style="--reveal-delay:{{ $loop->index * 100 }}ms">
                         <article class="news-card">
                             <a href="{{ $postUrl($item) }}" class="news-card__media">
-                                <img src="{{ $src($item['image']) }}" alt="{{ $item['title'] }}" loading="lazy">
+                                <img src="{{ $item->cover_url }}" alt="{{ $item->title }}" loading="lazy">
 
                                 <time class="news-card__date" datetime="{{ $rd->toDateString() }}">
-                                    <small>{{ ucfirst($rd->translatedFormat('M')) }}</small>
+                                    <small>{{ ucfirst($rd->locale('pt')->translatedFormat('M')) }}</small>
                                     <strong>{{ $rd->format('d') }}</strong>
                                     <small>{{ $rd->format('Y') }}</small>
                                 </time>
                             </a>
 
                             <div class="news-card__body">
-                                <span class="news-tag">{{ $item['category'] }}</span>
+                                <span class="news-tag">{{ $item->category?->name ?? 'Sem categoria' }}</span>
                                 <h3 class="news-card__title">
-                                    <a href="{{ $postUrl($item) }}">{{ $item['title'] }}</a>
+                                    <a href="{{ $postUrl($item) }}">{{ $item->title }}</a>
                                 </h3>
-                                <p class="news-card__excerpt">{{ $item['excerpt'] }}</p>
+                                <p class="news-card__excerpt">{{ $item->excerpt }}</p>
                                 <a href="{{ $postUrl($item) }}" class="btn btn--outline">Ler mais</a>
                             </div>
                         </article>

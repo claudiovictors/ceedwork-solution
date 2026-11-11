@@ -25,7 +25,7 @@
                         <span class="eyebrow">{{ $service['eyebrow'] ?? '' }}</span>
                         <h2 class="area__title">{{ $service['title'] ?? '' }}</h2>
                         <p>{!! $service['text'] ?? '' !!}</p>
-                        <a href="{{ url($service['link'] ?? '/servicos') }}" class="btn">Saber mais</a>
+                        <a href="{{ url($service['link'] ?? route('services')) }}" class="btn">Saber mais</a>
                     </div>
                 </div>
             </div>

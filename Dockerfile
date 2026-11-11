@@ -39,18 +39,37 @@ RUN apt-get update \
         exif \
         gd \
         intl \
-        mbstring \
-        opcache \
         pcntl \
         pdo_mysql \
         zip \
-    && a2enmod rewrite \
+    && a2enmod rewrite headers \
     && printf '%s\n' \
+        'ServerTokens Prod' \
+        'ServerSignature Off' \
         '<Directory /var/www/html/public>' \
+        '    Options +FollowSymLinks' \
         '    AllowOverride All' \
         '    Require all granted' \
         '</Directory>' \
         > /etc/apache2/conf-available/laravel.conf \
+    && printf '%s\n' \
+        'Header always set X-Content-Type-Options "nosniff"' \
+        'Header always set X-Frame-Options "SAMEORIGIN"' \
+        'Header always set Referrer-Policy "strict-origin-when-cross-origin"' \
+        'Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"' \
+        >> /etc/apache2/conf-available/laravel.conf \
+    && printf '%s\n' \
+        'upload_max_filesize = 10M' \
+        'post_max_size = 12M' \
+        'memory_limit = 256M' \
+        'max_execution_time = 60' \
+        'opcache.enable = 1' \
+        'opcache.memory_consumption = 128' \
+        'opcache.max_accelerated_files = 10000' \
+        'opcache.validate_timestamps = 0' \
+        'opcache.jit = 1255' \
+        'opcache.jit_buffer_size = 64M' \
+        > /usr/local/etc/php/conf.d/app.ini \
     && a2enconf laravel \
     && rm -rf /var/lib/apt/lists/*
 
@@ -64,14 +83,22 @@ WORKDIR /var/www/html
 
 COPY --from=dependencies --chown=www-data:www-data /app ./
 COPY --from=frontend --chown=www-data:www-data /app/public/build ./public/build
+COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN mkdir -p \
+        storage/app/public \
         storage/framework/cache \
         storage/framework/sessions \
         storage/framework/views \
         storage/logs \
         bootstrap/cache \
+    && rm -rf public/storage \
+    && ln -s ../storage/app/public public/storage \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R ug+rwX storage bootstrap/cache
+    && chmod -R ug+rwX storage bootstrap/cache \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 80
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["apache2-foreground"]

@@ -8,7 +8,11 @@
 
 @section('content')
     @include('components._marcas')
-    @include('components._destaques')
+
+    @if($posts->isNotEmpty())
+        @include('components._destaques')
+    @endif
+
     @include('components._servicos')
     @include('components._parceiros')
 @endsection

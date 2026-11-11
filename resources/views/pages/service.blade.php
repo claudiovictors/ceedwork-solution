@@ -53,6 +53,18 @@
 </section>
 
 {{-- Blocos de serviços --}}
+@if($services->isEmpty())
+    <section class="news">
+        <div class="container">
+            <div class="news-empty">
+                <i class='bx bx-briefcase' aria-hidden="true"></i>
+                <h3>Ainda não há serviços publicados</h3>
+                <p>Volte em breve para conhecer as nossas soluções.</p>
+            </div>
+        </div>
+    </section>
+@endif
+
 @foreach($services as $service)
     @php
         $even = $loop->even;
@@ -104,7 +116,7 @@
                     @endforeach
                 </ul>
 
-                <a href="{{ url('/contacts') }}" class="btn">
+                <a href="{{ route('contact') }}" class="btn">
                     Pedir orçamento
                     <i class='bx bx-right-arrow-alt'></i>
                 </a>

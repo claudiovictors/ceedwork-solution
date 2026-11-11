@@ -75,7 +75,7 @@
                 <li><a href="{{ route('services') }}" class="{{ request()->is('services*') ? 'active' : '' }}">Serviços</a></li>
                 <li><a href="{{ route('portfolio') }}" class="{{ request()->is('portfolio*') ? 'active' : '' }}">Portfólio</a></li>
                 <li><a href="{{ route('news') }}" class="{{ request()->is('news*') ? 'active' : '' }}">Notícias</a></li>
-                <li><a href="{{ route('contact') }}" class="{{ request()->is('contacts') ? 'active' : '' }}">Contactos</a></li>
+                <li><a href="{{ route('contact') }}" class="{{ request()->is('contact*') ? 'active' : '' }}">Contactos</a></li>
             </ul>
 
             <div class="drawer__extra">

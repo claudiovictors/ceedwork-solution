@@ -24,7 +24,7 @@ class AdminUserSeeder extends Seeder
             return;
         }
 
-        $user = User::updateOrCreate(
+        $user = User::firstOrCreate(
             ['email' => $email],
             [
                 'name' => env('ADMIN_NAME', 'Administrador Ceedwork'),
@@ -33,6 +33,10 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        if (! $user->isAdmin()) {
+            $user->forceFill(['is_admin' => true])->save();
+        }
 
         $this->command?->info("Administrador garantido: {$user->email}");
     }

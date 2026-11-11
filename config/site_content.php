@@ -440,22 +440,7 @@ return [
                                     'rules' => ['nullable', 'string', 'max:8000'],
                                 ],
                             ],
-                            'default' => [
-                                [
-                                    'eyebrow' => 'Desenvolvimento',
-                                    'title' => 'Software à medida',
-                                    'text' => 'Criamos <strong>sistemas web e mobile</strong> pensados para o seu negócio: gestão, vendas, faturação e muito mais. Soluções seguras, escaláveis e prontas para crescer consigo.',
-                                    'link' => '/servicos',
-                                    'images' => "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=75",
-                                ],
-                                [
-                                    'eyebrow' => 'Infraestrutura',
-                                    'title' => 'Equipamentos prontos para servir',
-                                    'text' => 'Projetamos e instalamos a infraestrutura tecnológica da sua empresa, com <strong>acompanhamento e suporte contínuo</strong> para que o seu negócio nunca pare.',
-                                    'link' => '/servicos',
-                                    'images' => "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=75\nhttps://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=75",
-                                ],
-                            ],
+                            'default' => [],
                         ],
                     ],
                 ],

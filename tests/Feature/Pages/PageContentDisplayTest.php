@@ -219,12 +219,12 @@ class PageContentDisplayTest extends TestCase
             ->assertSee('https://example.com/servico-b.jpg');
     }
 
-    public function test_home_services_use_default_content_when_not_customized(): void
+    public function test_home_services_section_is_hidden_when_not_customized(): void
     {
         $this->get(route('home'))
             ->assertOk()
-            ->assertSee('Software à medida')
-            ->assertSee('Equipamentos prontos para servir');
+            ->assertDontSee('Software à medida')
+            ->assertDontSee('Equipamentos prontos para servir');
     }
 
     public function test_news_header_and_footer_text_are_editable(): void
