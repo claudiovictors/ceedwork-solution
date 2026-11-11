@@ -24,6 +24,10 @@
             'background' => 'bg-[#fdf3e7]',
             'text' => 'text-[#9a5b13]',
         ],
+        'red' => [
+            'background' => 'bg-red-50',
+            'text' => 'text-red-600',
+        ],
     ];
 
     $style = $tones[$tone] ?? $tones['blue'];

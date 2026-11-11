@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EditorUploadController;
 use App\Http\Controllers\Admin\PageContentController;
@@ -100,6 +101,20 @@ Route::middleware(['auth', 'admin'])->prefix('ceed-admin')->group(function (): v
         Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
         Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
         Route::patch('/{project}/toggle-published', [ProjectController::class, 'togglePublished'])->name('toggle-published');
+    });
+
+    /**
+     * --------------------------------------------------------------------
+     * Contact Messages
+     * --------------------------------------------------------------------
+     *
+     * Mensagens enviadas pelo formulário de contacto do website.
+     */
+    Route::prefix('messages')->name('admin.messages.')->group(function (): void {
+        Route::get('/', [ContactMessageController::class, 'index'])->name('index');
+        Route::get('/{message}', [ContactMessageController::class, 'show'])->name('show');
+        Route::patch('/{message}/toggle-read', [ContactMessageController::class, 'toggleRead'])->name('toggle-read');
+        Route::delete('/{message}', [ContactMessageController::class, 'destroy'])->name('destroy');
     });
 
     /**

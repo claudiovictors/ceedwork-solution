@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use App\Support\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -57,6 +58,16 @@ class ContactController extends Controller
             'phone' => 'telefone',
             'subject' => 'assunto',
             'message' => 'mensagem',
+        ]);
+
+        ContactMessage::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
+            'subject' => $data['subject'],
+            'message' => $data['message'],
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
         ]);
 
         $body = implode("\n", [

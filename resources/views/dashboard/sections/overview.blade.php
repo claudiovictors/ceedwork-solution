@@ -42,6 +42,13 @@
             'tone' => 'amber',
             'description' => 'Projetos visíveis no portfólio',
         ],
+        [
+            'label' => 'Mensagens não lidas',
+            'value' => $stats['messages'] ?? 0,
+            'icon' => 'bx-envelope',
+            'tone' => 'red',
+            'description' => 'Contactos por responder no website',
+        ],
     ];
 @endphp
 
@@ -101,7 +108,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-6">
             @foreach($cards as $card)
                 <x-admin-stat-card
                     :label="$card['label']"

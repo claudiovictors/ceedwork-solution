@@ -24,6 +24,14 @@
             'createRoute' => 'admin.portfolio.create',
             'createLabel' => 'Novo projeto',
         ],
+        [
+            'title' => 'Mensagens',
+            'description' => 'Contactos recebidos pelo website',
+            'icon' => 'bx-envelope',
+            'indexRoute' => 'admin.messages.index',
+            'createRoute' => null,
+            'createLabel' => null,
+        ],
     ];
 @endphp
 
@@ -61,12 +69,14 @@
                     >
                         Gerir <i class="bx bx-right-arrow-alt text-sm"></i>
                     </a>
-                    <a
-                        href="{{ route($section['createRoute']) }}"
-                        class="inline-flex items-center gap-1 rounded-md bg-[#e7f6f3] px-2.5 py-1.5 text-xs font-semibold text-[#0d5c52] transition hover:bg-[#d2eee8]"
-                    >
-                        <i class="bx bx-plus text-sm"></i> {{ $section['createLabel'] }}
-                    </a>
+                    @if(! empty($section['createRoute']))
+                        <a
+                            href="{{ route($section['createRoute']) }}"
+                            class="inline-flex items-center gap-1 rounded-md bg-[#e7f6f3] px-2.5 py-1.5 text-xs font-semibold text-[#0d5c52] transition hover:bg-[#d2eee8]"
+                        >
+                            <i class="bx bx-plus text-sm"></i> {{ $section['createLabel'] }}
+                        </a>
+                    @endif
                 </div>
             </div>
         @endforeach

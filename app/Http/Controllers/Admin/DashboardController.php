@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
@@ -33,6 +34,7 @@ class DashboardController extends Controller
                 'drafts' => Post::query()->where('status', PostStatus::Draft->value)->count(),
                 'services' => Service::active()->count(),
                 'projects' => Project::published()->count(),
+                'messages' => ContactMessage::query()->unread()->count(),
             ],
             'recentPosts' => $recentPosts,
         ]);

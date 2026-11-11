@@ -1,6 +1,7 @@
 @php
     $logo = $data['core']['logo_white'] ?? $data['core']['logo'] ?? null;
     $logoIcon = $data['core']['logo_icon'] ?? $logo;
+    $unreadMessages = \App\Models\ContactMessage::query()->unread()->count();
 
     $navigation = [
         'Geral' => [
@@ -9,6 +10,13 @@
                 'icon' => 'bx-grid-alt',
                 'route' => 'dashboard',
                 'active' => 'dashboard',
+            ],
+            [
+                'label' => 'Mensagens',
+                'icon' => 'bx-envelope',
+                'route' => 'admin.messages.index',
+                'active' => ['admin.messages.index', 'admin.messages.show'],
+                'badge' => $unreadMessages,
             ],
         ],
         'Conteúdos' => [
@@ -170,6 +178,13 @@
                                     class="ml-auto rounded-full bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white/35"
                                 >
                                     Breve
+                                </span>
+                            @elseif(! empty($item['badge']))
+                                <span
+                                    x-show="!sidebarCollapsed"
+                                    class="ml-auto rounded-full bg-[#1baa99] px-1.5 py-0.5 text-[10px] font-semibold text-white"
+                                >
+                                    {{ $item['badge'] }}
                                 </span>
                             @endif
                         </a>
