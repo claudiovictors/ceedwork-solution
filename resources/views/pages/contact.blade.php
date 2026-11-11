@@ -3,8 +3,17 @@
 @section('title', 'Contactos | Ceedwork')
 @section('description', 'Fale com a Ceedwork-Solutions: telefones, emails, localização em Cabinda, formulário de contacto e perguntas frequentes.')
 
-@section('content')
 @php
+    $banner = $pageContent->get('contact', 'banner', null, []);
+    $intro = $pageContent->get('contact', 'intro', null, []);
+    $faq = $pageContent->get('contact', 'faq', null, []);
+    $faqs = $faq['items'] ?? [];
+    $subjects = collect($pageContent->get('contact', 'subjects', 'items', []))
+        ->pluck('subject')
+        ->filter()
+        ->values()
+        ->all();
+
     $phones = collect($site->get('contact.phones', []))
         ->map(fn (array $phone): array => [
             'label' => $phone['label'] ?? '',
@@ -42,42 +51,12 @@
         'github' => 'bxl-github',
     ];
 
-    // ---- Perguntas frequentes (exemplos: confirma e ajusta as respostas) ----
-    $faqs = [
-        [
-            'q' => 'Que tipos de projetos a Ceedwork desenvolve?',
-            'a' => 'Desenvolvemos software à medida, sistemas web, aplicativos mobile e sites institucionais, sempre adaptados às necessidades de cada cliente.',
-        ],
-        [
-            'q' => 'Como posso pedir um orçamento?',
-            'a' => 'Preencha o formulário desta página, escreva-nos por email ou ligue. Depois de entendermos o que precisa, enviamos uma proposta com prazos e valores.',
-        ],
-        [
-            'q' => 'Quanto tempo leva a desenvolver um projeto?',
-            'a' => 'Depende da complexidade e do âmbito. Um site institucional costuma ser mais rápido do que um sistema de gestão completo. O cronograma é definido na proposta.',
-        ],
-        [
-            'q' => 'Oferecem suporte depois da entrega?',
-            'a' => 'Sim, acompanhamos os projetos após a entrega, com suporte técnico e manutenção. Os detalhes do acompanhamento são combinados em cada projeto.',
-        ],
-        [
-            'q' => 'Atendem clientes fora de Cabinda?',
-            'a' => 'Estamos sediados em Cabinda e servimos clientes em toda a região. O acompanhamento pode ser feito presencialmente ou à distância.',
-        ],
-        [
-            'q' => 'Posso ver exemplos de trabalhos anteriores?',
-            'a' => 'Claro! Consulte a página de portfólio ou peça-nos exemplos relacionados com o seu sector.',
-        ],
-        [
-            'q' => 'Como falo com o suporte técnico?',
-            'a' => 'Use o email de suporte ou o WhatsApp indicados nesta página, ou escolha o assunto "Suporte técnico" no formulário.',
-        ],
-    ];
 @endphp
 
 @section('herosection')
     @include('components._page-header', [
-        'title'  => 'Contactos',
+        'title' => $banner['title'] ?? 'Contactos',
+        'image' => \App\Support\ImageUrl::for($banner['image'] ?? null),
         'crumbs' => [
             ['label' => 'Início', 'url' => '/'],
             ['label' => 'Contactos'],
@@ -85,6 +64,7 @@
     ])
 @endsection
 
+@section('content')
 {{-- Cartões de contacto --}}
 <section class="contact-cards">
     <div class="container contact-cards__grid">
@@ -135,18 +115,25 @@
     <div class="container contact-main__inner">
 
         <div class="contact-intro" data-reveal="left">
-            <span class="eyebrow">Fale connosco</span>
-            <h2 class="contact-title">Envie-nos uma mensagem</h2>
-            <p>
-                Tem um projeto em mente, uma dúvida ou precisa de ajuda? Preencha o formulário e a nossa equipe responde o mais breve possível.
-            </p>
+            @if(! empty($intro['eyebrow']))
+                <span class="eyebrow">{{ $intro['eyebrow'] }}</span>
+            @endif
+            <h2 class="contact-title">{{ $intro['title'] ?? 'Envie-nos uma mensagem' }}</h2>
+            <p>{{ $intro['text'] ?? '' }}</p>
 
             <ul class="contact-quick">
-                <li>
-                    <i class='bx bx-time-five' aria-hidden="true"></i>
-                    <span>Respondemos nos dias úteis, dentro do horário de atendimento.</span>
-                </li>
-                @if($supportEmail)
+                @if(! empty($intro['quick_1']))
+                    <li>
+                        <i class='bx bx-time-five' aria-hidden="true"></i>
+                        <span>{{ $intro['quick_1'] }}</span>
+                    </li>
+                @endif
+                @if(! empty($intro['quick_2']))
+                    <li>
+                        <i class='bx bx-support' aria-hidden="true"></i>
+                        <span>{{ $intro['quick_2'] }}</span>
+                    </li>
+                @elseif($supportEmail)
                     <li>
                         <i class='bx bx-support' aria-hidden="true"></i>
                         <span>Suporte técnico: <a href="mailto:{{ $supportEmail }}">{{ $supportEmail }}</a></span>
@@ -254,19 +241,21 @@
 <section class="faq">
     <div class="container">
         <header class="faq__head" data-reveal>
-            <span class="eyebrow">Dúvidas</span>
-            <h2 class="faq__title">Perguntas frequentes</h2>
+            @if(! empty($faq['eyebrow']))
+                <span class="eyebrow">{{ $faq['eyebrow'] }}</span>
+            @endif
+            <h2 class="faq__title">{{ $faq['title'] ?? 'Perguntas frequentes' }}</h2>
         </header>
 
         <div class="faq__list">
-            @foreach($faqs as $faq)
+            @foreach($faqs as $item)
                 <details class="faq__item" name="faq" data-reveal style="--reveal-delay:{{ $loop->index * 60 }}ms">
                     <summary>
-                        <span>{{ $faq['q'] }}</span>
+                        <span>{{ $item['question'] ?? '' }}</span>
                         <i class='bx bx-chevron-down' aria-hidden="true"></i>
                     </summary>
                     <div class="faq__answer">
-                        <p>{{ $faq['a'] }}</p>
+                        <p>{{ $item['answer'] ?? '' }}</p>
                     </div>
                 </details>
             @endforeach

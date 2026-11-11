@@ -8,9 +8,14 @@
     <link rel="stylesheet" href="{{ asset('css/pages/news.css') }}">
 @endpush
 
+@php
+    $header = $pageContent->get('news', 'header', null, []);
+@endphp
+
 @section('herosection')
     @include('components._page-header', [
-        'title'  => 'Notícias',
+        'title' => $header['title'] ?? 'Notícias',
+        'image' => \App\Support\ImageUrl::for($header['image'] ?? null),
         'crumbs' => [
             ['label' => 'Início', 'url' => '/'],
             ['label' => 'Notícias'],

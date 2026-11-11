@@ -403,6 +403,90 @@ return [
                         ],
                     ],
                 ],
+                'brands' => [
+                    'label' => 'Marcas',
+                    'description' => 'Marcas apresentadas no topo da página inicial.',
+                    'fields' => [
+                        'items' => [
+                            'type' => 'repeater',
+                            'label' => 'Marcas',
+                            'item_label' => 'Marca',
+                            'rules' => ['array'],
+                            'fields' => [
+                                'name' => [
+                                    'type' => 'text',
+                                    'label' => 'Nome',
+                                    'rules' => ['required', 'string', 'max:80'],
+                                ],
+                                'image' => [
+                                    'type' => 'text',
+                                    'label' => 'Imagem (caminho ou URL)',
+                                    'help' => 'Ex.: assets/images/core/mark-ceedwork.png ou https://...',
+                                    'rules' => ['required', 'string', 'max:2048'],
+                                ],
+                                'url' => [
+                                    'type' => 'text',
+                                    'label' => 'Link',
+                                    'rules' => ['nullable', 'string', 'max:2048'],
+                                ],
+                            ],
+                            'default' => [
+                                ['name' => 'Ceedwork Solution', 'image' => 'assets/images/core/mark-ceedwork.png', 'url' => '/services'],
+                                ['name' => 'Ceedwork Wyza', 'image' => 'assets/images/core/mark-wiza.png', 'url' => 'https://wyza.ceedwork-solution.com/'],
+                                ['name' => 'CANDONGA', 'image' => 'assets/images/core/mark-candonga.png', 'url' => '/services'],
+                            ],
+                        ],
+                    ],
+                ],
+                'partners' => [
+                    'label' => 'Parceiros',
+                    'description' => 'Parceiros apresentados na página inicial.',
+                    'fields' => [
+                        'eyebrow' => [
+                            'type' => 'text',
+                            'label' => 'Rótulo superior',
+                            'rules' => ['nullable', 'string', 'max:80'],
+                            'default' => 'Parcerias',
+                        ],
+                        'title' => [
+                            'type' => 'text',
+                            'label' => 'Título',
+                            'rules' => ['required', 'string', 'max:120'],
+                            'default' => 'Os nossos parceiros',
+                        ],
+                        'items' => [
+                            'type' => 'repeater',
+                            'label' => 'Parceiros',
+                            'item_label' => 'Parceiro',
+                            'rules' => ['array'],
+                            'fields' => [
+                                'name' => [
+                                    'type' => 'text',
+                                    'label' => 'Nome',
+                                    'rules' => ['required', 'string', 'max:80'],
+                                ],
+                                'image' => [
+                                    'type' => 'text',
+                                    'label' => 'Imagem (caminho ou URL)',
+                                    'help' => 'Ex.: assets/images/banners/maimona.jpeg ou https://...',
+                                    'rules' => ['required', 'string', 'max:2048'],
+                                ],
+                                'url' => [
+                                    'type' => 'text',
+                                    'label' => 'Link',
+                                    'rules' => ['nullable', 'string', 'max:2048'],
+                                ],
+                            ],
+                            'default' => [
+                                ['name' => 'Maimona', 'image' => 'assets/images/banners/maimona.jpeg', 'url' => null],
+                                ['name' => 'Blessed', 'image' => 'assets/images/banners/blessed.webp', 'url' => null],
+                                ['name' => 'Graças', 'image' => 'assets/images/banners/gracas.webp', 'url' => null],
+                                ['name' => 'Kuma', 'image' => 'assets/images/banners/kuma.png', 'url' => null],
+                                ['name' => 'Mama', 'image' => 'assets/images/banners/mama.webp', 'url' => null],
+                            ],
+                        ],
+                    ],
+                ],
                 'cta' => [
                     'label' => 'Chamada final (CTA)',
                     'description' => 'Bloco de chamada à ação no fim da página.',
@@ -725,7 +809,7 @@ return [
                             'type' => 'text',
                             'label' => 'Texto de apoio 2',
                             'rules' => ['nullable', 'string', 'max:180'],
-                            'default' => 'Suporte técnico: info@ceedwork-solutions.com',
+                            'default' => '',
                         ],
                     ],
                 ],
@@ -813,6 +897,18 @@ return [
                             'label' => 'Título',
                             'rules' => ['required', 'string', 'max:120'],
                             'default' => 'Serviços',
+                        ],
+                        'intro_eyebrow' => [
+                            'type' => 'text',
+                            'label' => 'Rótulo da introdução',
+                            'rules' => ['nullable', 'string', 'max:80'],
+                            'default' => 'O que fazemos',
+                        ],
+                        'intro_title' => [
+                            'type' => 'text',
+                            'label' => 'Título da introdução',
+                            'rules' => ['required', 'string', 'max:160'],
+                            'default' => 'Tecnologia e inovação para transformar instituições',
                         ],
                         'intro' => [
                             'type' => 'rich',

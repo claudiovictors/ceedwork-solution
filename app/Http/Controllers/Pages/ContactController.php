@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
+use App\Support\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use App\Http\Controllers\Controller;
 
 class ContactController extends Controller
 {
-    /** Assuntos do formulário (usados no select e na validação) */
-    public const SUBJECTS = [
-        'Pedido de orçamento',
-        'Suporte técnico',
-        'Parcerias',
-        'Dúvidas gerais',
-        'Outro',
-    ];
+    public function __construct(private readonly PageContent $pageContent) {}
 
     public function show(): View
     {
-        return view('pages.contact', ['subjects' => self::SUBJECTS]);
+        return view('pages.contact', ['subjects' => $this->subjects()]);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function subjects(): array
+    {
+        return collect($this->pageContent->get('contact', 'subjects', 'items', []))
+            ->pluck('subject')
+            ->filter()
+            ->values()
+            ->all();
     }
 
     public function send(Request $request): RedirectResponse
@@ -36,7 +42,7 @@ class ContactController extends Controller
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:150'],
             'phone' => ['nullable', 'string', 'max:30', 'regex:/^[0-9+\s()\-]{7,30}$/'],
-            'subject' => ['required', Rule::in(self::SUBJECTS)],
+            'subject' => ['required', Rule::in($this->subjects())],
             'message' => ['required', 'string', 'min:10', 'max:3000'],
         ], [
             'required' => 'O campo :attribute é obrigatório.',

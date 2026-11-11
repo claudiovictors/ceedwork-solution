@@ -1,153 +1,91 @@
-{{-- resources/views/servicos.blade.php --}}
+{{-- resources/views/portfolio.blade.php --}}
 @extends('layouts.main')
 
-@section('title', 'Serviços | Ceedwork')
-@section('description', 'Desenvolvimento de software sob medida, aplicações mobile e soluções web: conheça os serviços da Ceedwork-Solutions, em Cabinda.')
+@section('title', 'Portfólio | Ceedwork')
+@section('description', 'Conheça alguns dos projetos desenvolvidos pela Ceedwork-Solutions para empresas e instituições.')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/servicos.css') }}">
-@endpush
+@php
+    $header = $pageContent->get('portfolio', 'header', null, []);
+@endphp
 
 @section('herosection')
     @include('components._page-header', [
-        'title' => 'Serviços',
+        'title' => $header['title'] ?? 'Portfólio',
+        'image' => \App\Support\ImageUrl::for($header['image'] ?? null),
         'crumbs' => [
             ['label' => 'Início', 'url' => '/'],
-            ['label' => 'Serviços'],
+            ['label' => 'Portfólio'],
         ],
     ])
 @endsection
 
 @section('content')
-    @php
-        // Aceita URL externa (Unsplash) ou ficheiro local em public/assets/images
-        $src = fn($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
+<section class="news">
+    <div class="container">
 
-        // Para adicionar/editar um serviço, mexe só neste array
-        $services = [
-            [
-                'id' => 'software',
-                'icon' => 'bx-code-alt',
-                'short' => 'Software',
-                'eyebrow' => 'Serviço 01',
-                'title' => 'Desenvolvimento de Software',
-                'text' => 'Soluções feitas à medida das necessidades do seu negócio.',
-                'image' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=75',
-                'items' => [
-                    'Desenvolvimento de software sob medida',
-                    'Sistemas de gestão empresarial (ERP)',
-                ],
-            ],
-            [
-                'id' => 'mobile',
-                'icon' => 'bx-mobile-alt',
-                'short' => 'Mobile',
-                'eyebrow' => 'Serviço 02',
-                'title' => 'Desenvolvimento Mobile',
-                'text' => 'Aplicações para os dispositivos que os seus clientes usam todos os dias.',
-                'image' => 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1000&q=75',
-                'items' => [
-                    'Aplicações Android',
-                    'Aplicações iOS',
-                    'Aplicações híbridas (Flutter / React Native)',
-                ],
-            ],
-            [
-                'id' => 'web',
-                'icon' => 'bx-globe',
-                'short' => 'Web',
-                'eyebrow' => 'Serviço 03',
-                'title' => 'Desenvolvimento Web',
-                'text' => 'A presença digital da sua empresa, do site institucional à loja online.',
-                'image' => 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=1000&q=75',
-                'items' => [
-                    'Criação de websites institucionais',
-                    'Desenvolvimento de lojas online (E-commerce)',
-                    'Portais corporativos',
-                ],
-            ],
-        ];
-    @endphp
-
-    {{-- Introdução + atalhos --}}
-    <section class="services-intro">
-        <div class="container">
+        @if(! empty($header['intro']))
             <div class="services-intro__body" data-reveal>
-                <span class="eyebrow">O que fazemos</span>
-                <h2 class="services-intro__title">Soluções digitais sob medida</h2>
-                <p>
-                    Da ideia ao produto final, desenvolvemos software, aplicações mobile e soluções web pensadas para as
-                    necessidades do seu negócio.
-                </p>
+                <div>{!! $header['intro'] !!}</div>
+            </div>
+        @endif
 
-                <ul class="services-nav" aria-label="Ir para um serviço">
-                    @foreach($services as $service)
-                        <li>
-                            <a href="#{{ $service['id'] }}">
-                                <i class='bx {{ $service['icon'] }}' aria-hidden="true"></i> {{ $service['short'] }}
+        <ul class="news-grid">
+            @forelse($projects as $project)
+                <li class="news-item" data-reveal style="--reveal-delay:{{ ($loop->index % 3) * 100 }}ms">
+                    <article class="news-card">
+                        @if($project->url)
+                            <a href="{{ $project->url }}" class="news-card__media" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ $project->image_url }}" alt="{{ $project->name }}" loading="lazy">
                             </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    </section>
+                        @else
+                            <div class="news-card__media">
+                                <img src="{{ $project->image_url }}" alt="{{ $project->name }}" loading="lazy">
+                            </div>
+                        @endif
 
-    {{-- Blocos de serviço (alternam o lado e o fundo) --}}
-    @foreach($services as $service)
-        @php $even = $loop->even; @endphp
+                        <div class="news-card__body">
+                            @if($project->category)
+                                <span class="news-tag">{{ $project->category }}</span>
+                            @endif
 
-        <section class="service {{ $even ? 'service--alt' : '' }}" id="{{ $service['id'] }}">
-            <div class="container service__inner">
+                            <h3 class="news-card__title">{{ $project->name }}</h3>
 
-                <div class="service__media" data-reveal="{{ $even ? 'right' : 'left' }}">
-                    <img src="{{ $src($service['image']) }}" alt="{{ $service['title'] }}" loading="lazy">
-                </div>
+                            @if($project->summary)
+                                <p class="news-card__excerpt">{{ $project->summary }}</p>
+                            @endif
 
-                <div class="service__content" data-reveal="{{ $even ? 'left' : 'right' }}" style="--reveal-delay:150ms">
-                    <span class="eyebrow">{{ $service['eyebrow'] }}</span>
-                    <h2 class="service__title">{{ $service['title'] }}</h2>
+                            @if($project->url)
+                                <a href="{{ $project->url }}" class="btn btn--outline" target="_blank" rel="noopener noreferrer">
+                                    Ver projeto
+                                </a>
+                            @endif
+                        </div>
+                    </article>
+                </li>
+            @empty
+                <li class="news-empty">
+                    <i class='bx bx-folder-open' aria-hidden="true"></i>
+                    <h3>Ainda não há projetos publicados</h3>
+                    <p>Volte em breve para conhecer os nossos trabalhos.</p>
+                </li>
+            @endforelse
+        </ul>
 
-                    @if(!empty($service['text']))
-                        <p>{{ $service['text'] }}</p>
-                    @endif
-
-                    <ul class="service__list">
-                        @foreach($service['items'] as $item)
-                            <li>
-                                <i class='bx bx-check-circle' aria-hidden="true"></i>
-                                <span>{{ $item }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-
-                    <a href="{{ url('/contactos') }}" class="btn">
-                        Pedir orçamento <i class='bx bx-right-arrow-alt'></i>
+        @if($projects->hasPages())
+            <nav class="news-more" aria-label="Paginação do portfólio">
+                @if($projects->previousPageUrl())
+                    <a href="{{ $projects->previousPageUrl() }}" class="btn btn--outline">
+                        <i class='bx bx-left-arrow-alt'></i> Anteriores
                     </a>
-                </div>
-            </div>
-        </section>
-    @endforeach
+                @endif
 
-    {{-- Chamada final --}}
-    <section class="services-cta">
-        <div class="container">
-            <div class="services-cta__box" data-reveal="zoom">
-                <div class="services-cta__text">
-                    <span class="eyebrow">Vamos conversar</span>
-                    <h2>Tem um projeto em mente?</h2>
-                    <p>Fale connosco e receba uma proposta adaptada às suas necessidades.</p>
-                </div>
-
-                <div class="services-cta__actions">
-                    <a href="{{ url('/contactos') }}" class="btn">
-                        Fale connosco <i class='bx bx-right-arrow-alt'></i>
+                @if($projects->nextPageUrl())
+                    <a href="{{ $projects->nextPageUrl() }}" class="btn btn--outline">
+                        Seguintes <i class='bx bx-right-arrow-alt'></i>
                     </a>
-                    <a href="tel:{{ $data['social']['whatsapp'] }}" class="services-cta__phone">
-                        <i class='bx bx-phone-call' aria-hidden="true"></i> ou ligue +244 900 000 000
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+                @endif
+            </nav>
+        @endif
+    </div>
+</section>
 @endsection

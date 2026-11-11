@@ -1,6 +1,8 @@
 @php
     $siteName = (string) $site->get('general.site_name', 'Ceedwork');
-    $tagline = (string) $site->get('general.tagline', 'Soluções de tecnologia para o seu negócio crescer.');
+    $tagline = in_array('institutional', $pageContent->customized('footer'), true)
+        ? (string) $pageContent->get('footer', 'institutional', 'text')
+        : (string) $site->get('general.tagline', 'Soluções de tecnologia para o seu negócio crescer.');
     $logoWhite = $site->get('general.logo_white', $data['core']['logo_white'] ?? $data['core']['logo'] ?? null);
     $phones = $site->get('contact.phones', []);
     $emails = $site->get('contact.emails', []);

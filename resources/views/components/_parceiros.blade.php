@@ -1,21 +1,17 @@
 @php
-    $src = fn ($p) => Illuminate\Support\Str::startsWith($p, ['http://', 'https://']) ? $p : asset($p);
-
-    $partners = $partners ?? [
-        ['name' => 'Maimona', 'image' => $data['banners']['maimona'], 'url' => null],
-        ['name' => 'Blessed', 'image' => $data['banners']['blessed'], 'url' => null],
-        ['name' => 'Graças', 'image' => $data['banners']['gracas'], 'url' => null],
-        ['name' => 'Kuma', 'image' => $data['banners']['kuma'], 'url' => null],
-        ['name' => 'Mama', 'image' => $data['banners']['mama'], 'url' => null],
-    ];
+    $partners = $pageContent->get('home', 'partners', 'items', []);
+    $partnersEyebrow = $pageContent->get('home', 'partners', 'eyebrow');
+    $partnersTitle = $pageContent->get('home', 'partners', 'title', 'Os nossos parceiros');
 @endphp
 
 <section class="partners" aria-label="Parceiros estratégicos">
     <div class="container">
 
         <header class="partners__head" data-reveal>
-            <span class="eyebrow">Parcerias</span>
-            <h2 class="partners__title">Os nossos parceiros</h2>
+            @if(! empty($partnersEyebrow))
+                <span class="eyebrow">{{ $partnersEyebrow }}</span>
+            @endif
+            <h2 class="partners__title">{{ $partnersTitle }}</h2>
         </header>
 
         <div data-reveal style="--reveal-delay:150ms">
@@ -23,11 +19,11 @@
                 @foreach($partners as $partner)
                     <li class="partners__item">
                         @if(!empty($partner['url']))
-                            <a href="{{ $partner['url'] }}" title="{{ $partner['name'] }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ asset($src($partner['image'])) }}" alt="{{ $partner['name'] }}" loading="lazy">
+                            <a href="{{ url($partner['url']) }}" title="{{ $partner['name'] }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ \App\Support\ImageUrl::for($partner['image'] ?? null) }}" alt="{{ $partner['name'] }}" loading="lazy">
                             </a>
                         @else
-                            <img src="{{ asset($src($partner['image'])) }}" alt="{{ $partner['name'] }}" loading="lazy">
+                            <img src="{{ \App\Support\ImageUrl::for($partner['image'] ?? null) }}" alt="{{ $partner['name'] }}" loading="lazy">
                         @endif
                     </li>
                 @endforeach

@@ -3,9 +3,14 @@
 @section('title', 'Serviços | Ceedwork')
 @section('description', 'Conheça as soluções tecnológicas da Ceedwork-Solutions: softwares de gestão, plataformas digitais, websites, aplicativos móveis, redes, segurança informática e transformação digital.')
 
+@php
+    $header = $pageContent->get('services', 'header', null, []);
+@endphp
+
 @section('herosection')
     @include('components._page-header', [
-        'title'  => 'Serviços',
+        'title' => $header['title'] ?? 'Serviços',
+        'image' => \App\Support\ImageUrl::for($header['image'] ?? null),
         'crumbs' => [
             ['label' => 'Início', 'url' => '/'],
             ['label' => 'Serviços'],
@@ -159,20 +164,15 @@
 <section class="services-intro">
     <div class="container">
         <div class="services-intro__body" data-reveal>
-            <span class="eyebrow">O que fazemos</span>
+            @if(! empty($header['intro_eyebrow']))
+                <span class="eyebrow">{{ $header['intro_eyebrow'] }}</span>
+            @endif
 
             <h2 class="services-intro__title">
-                Tecnologia e inovação para transformar instituições
+                {{ $header['intro_title'] ?? 'Tecnologia e inovação para transformar instituições' }}
             </h2>
 
-            <p>
-                A Ceedwork-Solutions disponibiliza um conjunto de soluções
-                tecnológicas desenvolvidas para responder às necessidades
-                de empresas, instituições públicas e privadas.
-                Da criação de softwares à transformação digital,
-                trabalhamos para tornar os processos mais simples,
-                eficientes e seguros.
-            </p>
+            <div>{!! $header['intro'] ?? '' !!}</div>
 
             <ul class="services-nav" aria-label="Ir para um serviço">
                 @foreach($services as $service)
