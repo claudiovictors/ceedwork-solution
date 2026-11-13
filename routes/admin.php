@@ -32,6 +32,10 @@ Route::middleware(['auth', 'admin'])->prefix('ceed-admin')->group(function (): v
      *
      * Área principal de gestão administrativa.
      */
+    Route::get('/', function () {
+        return redirect()->route('login');
+    });
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 

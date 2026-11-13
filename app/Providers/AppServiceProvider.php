@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
             SiteComposer::class
         );
 
-        if (str_starts_with((string) config('app.url'), 'https://')) {
+        if (app()->environment('production') || str_starts_with((string) config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
     }
